@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Guanyin Love | Sacred Fortune Interpretation</title>
+
+  <!-- PayPal SDK — 上线前替换 client-id -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID_HERE&currency=USD&disable-funding=credit,card"></script>
+
+  <!-- Tailwind CSS & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Serif+SC:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── 设计系统变量 ─────────────────────────── */
+    :root {
+      --vermillion:       #962D22;
+      --vermillion-light: #B03D30;
+      --gold:             #C5A059;
+      --gold-light:       #D4B578;
+      --deep:             #1A1512;
+      --surface:          #221C18;
+      --soft-white:       #F5F2ED;
+      --muted:            rgba(197,160,89,0.45);
+      --radius-btn:       1rem;
+      --anim-shake:       0.1s;
+      --anim-stick:       1.2s;
+      --anim-fade:        0.8s;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--deep);
+      color: var(--gold);
+      margin: 0;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .serif         { font-family: 'Playfair Display', serif; }
+    .chinese-serif { font-family: 'Noto Serif SC', serif; }
+
+    .gold-text {
+      background: linear-gradient(160deg, var(--soft-white) 30%, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-panel {
+      background: rgba(26, 21, 18, 0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(197,160,89,0.12);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(150,45,34,0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── 签筒 ──────────────────────────────────── */
+    #fortune-jar {
+      position: relative;
+      width: 9rem;
+      height: 11rem;
+      background: radial-gradient(ellipse at 30% 20%, var(--vermillion-light), var(--vermillion) 60%, #6B1F16);
+      border-radius: 0 0 2.5rem 2.5rem / 0 0 2rem 2rem;
+      border-top-left-radius: 0.75rem;
+      border-top-right-radius: 0.75rem;
+      border: 5px solid var(--deep);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    #fortune-jar .jar-label {
+      font-size: 3.5rem;
+      font-family: 'Noto Serif SC', serif;
+      color: rgba(0,0,0,0.15);
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* ─── 签条 ──────────────────────────────────── */
+    #fortune-stick {
+      position: absolute;
+      bottom: 7rem;
+      width: 1.1rem;
+      height: 12rem;
+      background: linear-gradient(to bottom, var(--gold-light), var(--gold) 40%, var(--vermillion));
+      border-radius: 0.2rem 0.2rem 0 0;
+      opacity: 0;
+      z-index: 0;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.4);
+    }
+
+    #fortune-stick::after {
+      content: '';
+      position: absolute;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0.2rem;
+      height: 5rem;
+      background: rgba(0,0,0,0.18);
+      border-radius: 9999px;
+    }
+
+    /* ─── 动画 ──────────────────────────────────── */
+    @keyframes shake {
+      0%, 100% { transform: rotate(0deg) translateX(0); }
+      20%       { transform: rotate(-2.5deg) translateX(-2px); }
+      40%       { transform: rotate(2deg) translateX(2px); }
+      60%       { transform: rotate(-1.5deg) translateX(-1px); }
+      80%       { transform: rotate(1deg) translateX(1px); }
+    }
+    .shaking { animation: shake var(--anim-shake) infinite; }
+
+    @keyframes stick-up {
+      0%   { transform: translateY(0);     opacity: 0; }
+      15%  { opacity: 1; }
+      100% { transform: translateY(-8rem); opacity: 1; }
+    }
+    .stick-anim { animation: stick-up var(--anim-stick) cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeInUp var(--anim-fade) ease-out forwards; }
+
+    /* ─── 主按钮 ─────────────────────────────────── */
+    #draw-btn {
+      background: var(--vermillion);
+      color: white;
+      width: 100%;
+      max-width: 20rem;
+      padding: 1.1rem 0;
+      border-radius: var(--radius-btn);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(150,45,34,0.45);
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    }
+    #draw-btn:hover:not(:disabled) {
+      background: var(--vermillion-light);
+      box-shadow: 0 12px 40px rgba(150,45,34,0.55);
+    }
+    #draw-btn:active:not(:disabled) { transform: scale(0.97); }
+    #draw-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ─── 宣传卡片 ──────────────────────────────── */
+    .promo-card {
+      background: rgba(197,160,89,0.05);
+      border: 1px solid rgba(197,160,89,0.12);
+      border-radius: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .promo-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ─── 分隔线 ────────────────────────────────── */
+    .divider {
+      width: 2.5rem;
+      height: 1px;
+      background: rgba(197,160,89,0.22);
+      margin: 0 auto;
+    }
+
+    /* ─── PayPal 容器 ───────────────────────────── */
+    #paypal-button-container { min-height: 9.5rem; }
+
+    /* ─── 结果卡片 ──────────────────────────────── */
+    .advice-card {
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1rem;
+      transition: background 0.2s;
+    }
+    .advice-card:hover { background: rgba(255,255,255,0.07); }
+
+    /* ─── 标签徽章 ──────────────────────────────── */
+    .tag {
+      display: inline-block;
+      font-size: 0.625rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      background: rgba(150,45,34,0.20);
+      color: rgba(197,160,89,0.80);
+      border: 1px solid rgba(150,45,34,0.30);
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen relative">
+
+  <!-- ════════════════════════════════════════════
+       主界面 — 可滚动长页
+  ═════════════════════════════════════════════ -->
+  <main id="main-ui" class="relative flex-grow flex flex-col items-center px-6 pt-14 pb-16 z-10">
+
+    <!-- ── 品牌标题 ────────────────────────────── -->
+    <div class="text-center w-full max-w-sm mb-2">
+      <p class="text-[10px] uppercase tracking-[0.35em] mb-3" style="color:rgba(197,160,89,0.38)">Sacred Oracle</p>
+      <h1 class="text-4xl font-bold tracking-tight gold-text serif">Guanyin Love</h1>
+      <p class="text-xs italic leading-relaxed mt-3 px-4" style="color:var(--muted)">
+        Quiet your mind. The Goddess of Mercy offers clarity<br>to those who seek with a pure heart.
+      </p>
+    </div>
+
+    <div class="divider my-8"></div>
+
+    <!-- ── 签筒 & 签条 ─────────────────────────── -->
+    <div class="relative flex items-end justify-center mb-8"
+         style="width:9rem; height:13rem;">
+      <div id="fortune-stick" aria-hidden="true"></div>
+      <div id="fortune-jar" role="img" aria-label="Guanyin fortune jar">
+        <span class="jar-label">觀</span>
+      </div>
+    </div>
+
+    <!-- ── 抽签按钮 ────────────────────────────── -->
+    <button id="draw-btn" onclick="startDrawing()" aria-label="Draw a fortune stick">
+      DRAW YOUR FORTUNE
+    </button>
+
+    <p class="mt-4 text-[10px] uppercase tracking-[0.2em]" style="color:rgba(197,160,89,0.28)">
+      Sacred Offering · $1.00 USD
+    </p>
+
+    <div class="divider my-10"></div>
+
+    <!-- ── 宣传模块 ────────────────────────────── -->
+    <div class="w-full max-w-sm space-y-4">
+
+      <!-- 1. 观音庙介绍 -->
+      <div class="promo-card">
+        <div class="promo-icon">🏯</div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">The Temple</p>
+          <p class="text-xs leading-relaxed" style="color:rgba(197,160,89,0.62)">
+            Rooted in the ancient tradition of Guanyin — Goddess of Mercy and Compassion —
+            this oracle carries centuries of wisdom from temple seekers who came before you.
+            Each lot is drawn in her name, blessed with her grace.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. 公益承诺 -->
+      <div class="promo-card">
+        <div class="promo-icon">🌿</div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">Giving Back</p>
+          <p class="text-xs leading-relaxed" style="color:rgba(197,160,89,0.62)">
+            <span style="color:var(--gold-light); font-weight:600;">30% of net profits</span> are
+            donated to charitable causes supporting communities in need.
+            Your offering does more than reveal your fate — it helps others find their footing.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. 付费内容说明 -->
+      <div class="promo-card">
+        <div class="promo-icon">✨</div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">What You Receive</p>
+          <p class="text-xs leading-relaxed mb-3" style="color:rgba(197,160,89,0.62)">
+            Your $1.00 sacred offering unlocks a full personal reading across every dimension of your life:
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">💕 Love &amp; Relationships</span>
+            <span class="tag">💼 Career &amp; Purpose</span>
+            <span class="tag">🌾 Wealth &amp; Abundance</span>
+            <span class="tag">📖 Ancient Wisdom</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 免责声明 -->
+    <p class="mt-10 text-[9px] text-center leading-relaxed px-8" style="color:rgba(197,160,89,0.18)">
+      For entertainment and reflective purposes only.<br>
+      Not a substitute for professional advice.
+    </p>
+
+  </main>
+
+
+  <!-- ════════════════════════════════════════════
+       支付弹窗
+  ═════════════════════════════════════════════ -->
+  <div id="payment-overlay"
+       class="hidden fixed inset-0 z-50 flex items-end justify-center"
+       style="background:rgba(0,0,0,0.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);"
+       role="dialog" aria-modal="true" aria-labelledby="payment-title">
+
+    <div class="glass-panel w-full max-w-md rounded-t-[2.5rem] px-8 pt-8 pb-12 text-center shadow-2xl">
+      <div class="w-10 h-1 bg-white/10 rounded-full mx-auto mb-6"></div>
+      <h3 id="payment-title" class="text-2xl font-bold mb-2 gold-text serif">Unlock Your Fate</h3>
+      <p class="text-sm mb-6" style="color:var(--muted)">
+        A sacred interpretation requires a $1.00 offering.
+      </p>
+      <div id="paypal-button-container" class="mb-6"></div>
+      <button onclick="resetApp()"
+              class="text-[10px] uppercase tracking-widest transition-opacity hover:opacity-60"
+              style="color:rgba(197,160,89,0.28)">
+        Cancel &amp; Return
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════
+       结果页
+  ═════════════════════════════════════════════ -->
+  <div id="result-overlay"
+       class="hidden fixed inset-0 z-[60] overflow-y-auto"
+       style="background:var(--deep)"
+       role="main">
+
+    <div id="result-content" class="max-w-md mx-auto px-6 pt-12 pb-36 fade-in"></div>
+
+    <div class="fixed bottom-0 left-0 w-full px-6 pb-8 pt-16"
+         style="background:linear-gradient(to top, var(--deep) 60%, transparent)">
+      <button onclick="resetApp()"
+              class="w-full py-5 rounded-2xl font-bold text-[11px] uppercase tracking-[0.4em] transition-colors"
+              style="background:rgba(197,160,89,0.08); border:1px solid rgba(197,160,89,0.18); color:var(--gold)">
+        Return to Sanctuary
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════
+       脚本
+  ═════════════════════════════════════════════ -->
+  <script src="js/fortunes.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
