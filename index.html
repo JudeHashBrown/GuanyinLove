@@ -1,363 +1,351 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Guanyin Love | Sacred Fortune Interpretation</title>
-
-  <!-- PayPal SDK — 上线前替换 client-id -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AdBqnqamXzOIZEUyqnBow1kDm51HqFn52CgZqb8K8NjrAhZI2kDWAWWR-adjEeS9FhkktLAoc4yXtK-i&currency=USD&disable-funding=credit,card"></script>
-
-  <!-- Tailwind CSS & Fonts -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Serif+SC:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <style>
-    /* ─── 设计系统变量 ─────────────────────────── */
-    :root {
-      --vermillion:       #962D22;
-      --vermillion-light: #B03D30;
-      --gold:             #C5A059;
-      --gold-light:       #D4B578;
-      --deep:             #1A1512;
-      --surface:          #221C18;
-      --soft-white:       #F5F2ED;
-      --muted:            rgba(197,160,89,0.45);
-      --radius-btn:       1rem;
-      --anim-shake:       0.1s;
-      --anim-stick:       1.2s;
-      --anim-fade:        0.8s;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--deep);
-      color: var(--gold);
-      margin: 0;
-      overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .serif         { font-family: 'Playfair Display', serif; }
-    .chinese-serif { font-family: 'Noto Serif SC', serif; }
-
-    .gold-text {
-      background: linear-gradient(160deg, var(--soft-white) 30%, var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .glass-panel {
-      background: rgba(26, 21, 18, 0.97);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-top: 1px solid rgba(197,160,89,0.12);
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(150,45,34,0.14) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── 签筒 ──────────────────────────────────── */
-    #fortune-jar {
-      position: relative;
-      width: 9rem;
-      height: 11rem;
-      background: radial-gradient(ellipse at 30% 20%, var(--vermillion-light), var(--vermillion) 60%, #6B1F16);
-      border-radius: 0 0 2.5rem 2.5rem / 0 0 2rem 2rem;
-      border-top-left-radius: 0.75rem;
-      border-top-right-radius: 0.75rem;
-      border: 5px solid var(--deep);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    #fortune-jar .jar-label {
-      font-size: 3.5rem;
-      font-family: 'Noto Serif SC', serif;
-      color: rgba(0,0,0,0.15);
-      user-select: none;
-      line-height: 1;
-    }
-
-    /* ─── 签条 ──────────────────────────────────── */
-    #fortune-stick {
-      position: absolute;
-      bottom: 7rem;
-      width: 1.1rem;
-      height: 12rem;
-      background: linear-gradient(to bottom, var(--gold-light), var(--gold) 40%, var(--vermillion));
-      border-radius: 0.2rem 0.2rem 0 0;
-      opacity: 0;
-      z-index: 0;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.4);
-    }
-
-    #fortune-stick::after {
-      content: '';
-      position: absolute;
-      top: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0.2rem;
-      height: 5rem;
-      background: rgba(0,0,0,0.18);
-      border-radius: 9999px;
-    }
-
-    /* ─── 动画 ──────────────────────────────────── */
-    @keyframes shake {
-      0%, 100% { transform: rotate(0deg) translateX(0); }
-      20%       { transform: rotate(-2.5deg) translateX(-2px); }
-      40%       { transform: rotate(2deg) translateX(2px); }
-      60%       { transform: rotate(-1.5deg) translateX(-1px); }
-      80%       { transform: rotate(1deg) translateX(1px); }
-    }
-    .shaking { animation: shake var(--anim-shake) infinite; }
-
-    @keyframes stick-up {
-      0%   { transform: translateY(0);     opacity: 0; }
-      15%  { opacity: 1; }
-      100% { transform: translateY(-8rem); opacity: 1; }
-    }
-    .stick-anim { animation: stick-up var(--anim-stick) cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeInUp var(--anim-fade) ease-out forwards; }
-
-    /* ─── 主按钮 ─────────────────────────────────── */
-    #draw-btn {
-      background: var(--vermillion);
-      color: white;
-      width: 100%;
-      max-width: 20rem;
-      padding: 1.1rem 0;
-      border-radius: var(--radius-btn);
-      font-weight: 700;
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 32px rgba(150,45,34,0.45);
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-    }
-    #draw-btn:hover:not(:disabled) {
-      background: var(--vermillion-light);
-      box-shadow: 0 12px 40px rgba(150,45,34,0.55);
-    }
-    #draw-btn:active:not(:disabled) { transform: scale(0.97); }
-    #draw-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    /* ─── 宣传卡片 ──────────────────────────────── */
-    .promo-card {
-      background: rgba(197,160,89,0.05);
-      border: 1px solid rgba(197,160,89,0.12);
-      border-radius: 1.25rem;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-    .promo-icon {
-      font-size: 1.4rem;
-      line-height: 1;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-
-    /* ─── 分隔线 ────────────────────────────────── */
-    .divider {
-      width: 2.5rem;
-      height: 1px;
-      background: rgba(197,160,89,0.22);
-      margin: 0 auto;
-    }
-
-    /* ─── PayPal 容器 ───────────────────────────── */
-    #paypal-button-container { min-height: 9.5rem; }
-
-    /* ─── 结果卡片 ──────────────────────────────── */
-    .advice-card {
-      padding: 1.5rem;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1rem;
-      transition: background 0.2s;
-    }
-    .advice-card:hover { background: rgba(255,255,255,0.07); }
-
-    /* ─── 标签徽章 ──────────────────────────────── */
-    .tag {
-      display: inline-block;
-      font-size: 0.625rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 9999px;
-      background: rgba(150,45,34,0.20);
-      color: rgba(197,160,89,0.80);
-      border: 1px solid rgba(150,45,34,0.30);
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11110f">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Guanyin Oracle">
+  <meta property="og:title" content="Guanyin Oracle · A quiet moment of reflection">
+  <meta property="og:description" content="Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.">
+  <meta name="twitter:card" content="summary">
+  <title>Guanyin Oracle · A quiet moment of reflection</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/temple-oracle.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body class="flex flex-col min-h-screen relative">
+<body data-payments-enabled="false" data-paypal-client-id="" data-payment-api="" data-payment-display-price="">
+  <a class="skip-link" href="#main-content">Skip to the oracle</a>
 
-  <!-- ════════════════════════════════════════════
-       主界面 — 可滚动长页
-  ═════════════════════════════════════════════ -->
-  <main id="main-ui" class="relative flex-grow flex flex-col items-center px-6 pt-14 pb-16 z-10">
+  <div class="site-shell" id="site-shell">
+    <header class="topbar" aria-label="Site navigation">
+      <a class="brand" href="#oracle" aria-label="Guanyin Oracle home">
+        <span class="brand-seal" aria-hidden="true">G</span>
+        <span class="brand-copy">
+          <strong data-i18n="brand">Guanyin Oracle</strong>
+          <small>QUIET REFLECTIONS</small>
+        </span>
+      </a>
 
-    <!-- ── 品牌标题 ────────────────────────────── -->
-    <div class="text-center w-full max-w-sm mb-2">
-      <p class="text-[10px] uppercase tracking-[0.35em] mb-3" style="color:rgba(197,160,89,0.38)">Sacred Oracle</p>
-      <h1 class="text-4xl font-bold tracking-tight gold-text serif">Guanyin Love</h1>
-      <p class="text-xs italic leading-relaxed mt-3 px-4" style="color:var(--muted)">
-        Quiet your mind. The Goddess of Mercy offers clarity<br>to those who seek with a pure heart.
-      </p>
-    </div>
+      <nav class="desktop-nav" aria-label="Page navigation">
+        <a href="#ritual" data-i18n="navRitual">The ritual</a>
+        <a href="#about" data-i18n="navAbout">About the oracle</a>
+      </nav>
+    </header>
 
-    <div class="divider my-8"></div>
+    <main id="main-content" tabindex="-1">
+      <section class="oracle-hero" id="oracle" aria-labelledby="hero-title">
+        <div class="hero-aura" aria-hidden="true"></div>
 
-    <!-- ── 签筒 & 签条 ─────────────────────────── -->
-    <div class="relative flex items-end justify-center mb-8"
-         style="width:9rem; height:13rem;">
-      <div id="fortune-stick" aria-hidden="true"></div>
-      <div id="fortune-jar" role="img" aria-label="Guanyin fortune jar">
-        <span class="jar-label">觀</span>
-      </div>
-    </div>
+        <div class="hero-grid">
+          <div class="oracle-panel">
+            <div class="eyebrow">
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              <span data-i18n="eyebrow">ONE QUIET THOUGHT · ONE CLEARER VIEW</span>
+            </div>
 
-    <!-- ── 抽签按钮 ────────────────────────────── -->
-    <button id="draw-btn" onclick="startDrawing()" aria-label="Draw a fortune stick">
-      DRAW A GUIDANCE
-    </button>
+            <h1 id="hero-title" data-i18n="heroTitle">Hold one question.<br><em>Draw one reflection.</em></h1>
+            <p class="hero-intro" data-i18n="heroIntro">
+              Set the noise aside and bring one honest question to mind. The oracle does not decide for you; it offers another way to see.
+            </p>
 
-    <p class="mt-4 text-[10px] uppercase tracking-[0.2em]" style="color:rgba(197,160,89,0.28)">
-      Sacred Offering · $1.00 USD
-    </p>
+            <ol class="ritual-progress" aria-label="Oracle steps">
+              <li class="is-current" data-progress="1">
+                <span>01</span>
+                <strong data-i18n="progressAsk">Ask</strong>
+              </li>
+              <li data-progress="2">
+                <span>02</span>
+                <strong data-i18n="progressStill">Become still</strong>
+              </li>
+              <li data-progress="3">
+                <span>03</span>
+                <strong data-i18n="progressReceive">Receive</strong>
+              </li>
+            </ol>
 
-    <div class="divider my-10"></div>
+            <form class="question-form" id="question-form">
+              <fieldset class="topic-fieldset">
+                <legend data-i18n="topicLegend">What is on your mind?</legend>
+                <div class="topic-options">
+                  <label class="topic-option">
+                    <input type="radio" name="topic" value="General" checked>
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3.5c1.8 3.2 4.3 5.7 7.5 7.5-3.2 1.8-5.7 4.3-7.5 7.5-1.8-3.2-4.3-5.7-7.5-7.5C7.7 9.2 10.2 6.7 12 3.5Z"/></svg>
+                      <b data-i18n="topicGeneral">Overall</b>
+                    </span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="radio" name="topic" value="Love">
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.65-7 10-7 10Z"/></svg>
+                      <b data-i18n="topicLove">Love</b>
+                    </span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="radio" name="topic" value="Career">
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7m-12 4h16M6 7h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/></svg>
+                      <b data-i18n="topicCareer">Career</b>
+                    </span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="radio" name="topic" value="Wealth">
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 9.5h4.5a1.75 1.75 0 0 1 0 3.5h-3a1.75 1.75 0 0 0 0 3.5H15M12 7v10"/></svg>
+                      <b data-i18n="topicWealth">Wealth</b>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
 
-    <!-- ── 宣传模块 ────────────────────────────── -->
-    <div class="w-full max-w-sm space-y-4">
+              <label class="question-label" for="question-input">
+                <span data-i18n="questionLabel">Write your question</span>
+                <small data-i18n="questionOptional">Optional</small>
+              </label>
+              <div class="question-box">
+                <textarea id="question-input" name="question" maxlength="80" rows="2" data-i18n-placeholder="questionPlaceholder" placeholder="For example: How should I meet the change ahead?"></textarea>
+                <span class="question-count" aria-hidden="true"><b id="question-count">0</b>/80</span>
+              </div>
+              <p class="privacy-note">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                <span data-i18n="privacyNote">Your question stays on this device and is never uploaded</span>
+              </p>
 
-      <!-- 1. 观音庙介绍 -->
-      <div class="promo-card">
-        <div class="promo-icon">🏯</div>
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">The Temple</p>
-          <p class="text-xs leading-relaxed" style="color:rgba(197,160,89,0.62)">
-            Rooted in the ancient tradition of Guanyin — Goddess of Mercy and Compassion —
-            this oracle carries centuries of wisdom from temple seekers who came before you.
-            Each lot is drawn in her name, blessed with her grace.
-          </p>
+              <button class="primary-action" id="draw-btn" type="submit">
+                <span class="button-label" data-i18n="drawButton">DRAW A FORTUNE</span>
+                <span class="button-mark" aria-hidden="true">LOT</span>
+              </button>
+              <div class="offering-note">
+                <span data-i18n="freePreview">Lot number and first insight are free</span>
+                <i aria-hidden="true"></i>
+                <span id="full-price-note" data-i18n="fullPrice">Full reading · Free in preview</span>
+              </div>
+            </form>
+
+            <div class="draw-status" id="draw-status" role="status" aria-live="polite" aria-atomic="true"></div>
+          </div>
+
+          <figure class="visual-stage" id="visual-stage">
+            <div class="image-frame">
+              <img class="temple-image" src="assets/temple-oracle.webp" width="1536" height="1024" fetchpriority="high" decoding="async" alt="A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk">
+              <div class="image-wash" aria-hidden="true"></div>
+              <div class="quiet-breath" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="drawn-slip" id="drawn-slip" aria-hidden="true">
+                <span id="slip-number">01</span>
+              </div>
+            </div>
+            <figcaption>
+              <span class="caption-mark" aria-hidden="true"></span>
+              <span data-i18n="visualCaption">Take three quiet breaths, then draw</span>
+            </figcaption>
+          </figure>
         </div>
-      </div>
+      </section>
 
-      <!-- 2. 公益承诺 -->
-      <div class="promo-card">
-        <div class="promo-icon">🌿</div>
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">Giving Back</p>
-          <p class="text-xs leading-relaxed" style="color:rgba(197,160,89,0.62)">
-            <span style="color:var(--gold-light); font-weight:600;">30% of net profits</span> are
-            donated to charitable causes supporting communities in need.
-            Your offering does more than reveal your fate — it helps others find their footing.
-          </p>
+      <section class="preview-section" id="preview-section" hidden aria-labelledby="preview-title">
+        <div class="preview-shell">
+          <div class="preview-heading">
+            <div>
+              <p class="section-kicker" data-i18n="previewKicker">YOUR DRAW</p>
+              <h2 id="preview-title" tabindex="-1">Lot 28</h2>
+            </div>
+            <span class="grade-pill" id="preview-grade">TEMPLE EDITION</span>
+          </div>
+
+          <blockquote class="preview-poem" id="preview-poem"></blockquote>
+          <p class="preview-summary" id="preview-summary"></p>
+          <a class="preview-source" id="preview-source" href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer" data-i18n="sourceLink">View the original Chinese source</a>
+          <div class="asked-question" id="asked-question" hidden>
+            <span data-i18n="yourQuestion">THE QUESTION IN YOUR HEART</span>
+            <p id="asked-question-text"></p>
+          </div>
+
+          <div class="preview-actions">
+            <button class="primary-action compact" id="unlock-btn" type="button">
+              <span data-i18n="unlockButton">READ THE FULL INTERPRETATION</span>
+              <small id="unlock-price">Free preview</small>
+            </button>
+            <button class="text-action" id="redraw-btn" type="button" data-i18n="redrawButton">Ask a different question</button>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- 3. 付费内容说明 -->
-      <div class="promo-card">
-        <div class="promo-icon">✨</div>
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest mb-1.5" style="color:var(--gold)">What You Receive</p>
-          <p class="text-xs leading-relaxed mb-3" style="color:rgba(197,160,89,0.62)">
-            Your $1.00 sacred offering unlocks a full personal reading across every dimension of your life:
-          </p>
-          <div class="flex flex-wrap gap-2">
-            <span class="tag">💕 Love &amp; Relationships</span>
-            <span class="tag">💼 Career &amp; Purpose</span>
-            <span class="tag">🌾 Wealth &amp; Abundance</span>
-            <span class="tag">📖 Ancient Wisdom</span>
+      <section class="trust-strip" aria-label="Experience principles">
+        <article>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 2.9 8.3 7 10 4.1-1.7 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg>
+          <div><strong data-i18n="trustPrivateTitle">Private by design</strong><span data-i18n="trustPrivateText">Your question stays on this device</span></div>
+        </article>
+        <article>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 20V8m6 12V4m6 16v-9"/><path d="M3 20h18"/></svg>
+          <div><strong data-i18n="trustReflectTitle">Reflection, not fate</strong><span data-i18n="trustReflectText">Use the reading as a mirror</span></div>
+        </article>
+        <article>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.65-7 10-7 10Z"/></svg>
+          <div><strong data-i18n="trustCareTitle">Gentle guidance</strong><span data-i18n="trustCareText">Never a substitute for professional advice</span></div>
+        </article>
+      </section>
+
+      <section class="history-section" id="history-section" hidden aria-labelledby="history-title">
+        <div class="section-heading inline-heading">
+          <div>
+            <p class="section-kicker" data-i18n="historyKicker">SAVED ONLY ON THIS DEVICE</p>
+            <h2 id="history-title" data-i18n="historyTitle">Recent readings</h2>
+          </div>
+          <button class="clear-history" id="clear-history" type="button" data-i18n="clearHistory">Clear history</button>
+        </div>
+        <div class="history-list" id="history-list"></div>
+      </section>
+
+      <section class="ritual-section" id="ritual" aria-labelledby="ritual-title">
+        <div class="section-heading">
+          <p class="section-kicker" data-i18n="ritualKicker">THREE BREATHS BACK TO THE PRESENT</p>
+          <h2 id="ritual-title" data-i18n="ritualTitle">How to draw a fortune for this moment</h2>
+          <p data-i18n="ritualIntro">A meaningful draw begins by letting the question settle.</p>
+        </div>
+        <div class="ritual-cards">
+          <article>
+            <span class="step-number">I</span>
+            <div>
+              <h3 data-i18n="ritualOneTitle">One honest question</h3>
+              <p data-i18n="ritualOneText">Narrow your attention to the one thing that matters most right now. Honesty makes your own voice easier to hear.</p>
+            </div>
+          </article>
+          <article>
+            <span class="step-number">II</span>
+            <div>
+              <h3 data-i18n="ritualTwoTitle">Three quiet breaths</h3>
+              <p data-i18n="ritualTwoText">Breathe slowly three times. Do not assume good or bad, and do not keep drawing for the answer you want.</p>
+            </div>
+          </article>
+          <article>
+            <span class="step-number">III</span>
+            <div>
+              <h3 data-i18n="ritualThreeTitle">Find the next step</h3>
+              <p data-i18n="ritualThreeText">Treat the reading as a mirror. Keep the line that moves you, then choose one small action of your own.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about-section" id="about" aria-labelledby="about-title">
+        <div class="about-mark" aria-hidden="true">
+          <span>G</span>
+          <small>LOOK<br>WITHIN</small>
+        </div>
+        <div class="about-copy">
+          <p class="section-kicker" data-i18n="aboutKicker">TRADITIONAL IMAGERY · CONTEMPORARY LANGUAGE</p>
+          <h2 id="about-title" data-i18n="aboutTitle">The lot offers a perspective. The answer remains yours.</h2>
+          <p data-i18n="aboutText">This edition presents 67 independent English translations from the 100-lot collection published by Wujia Longcheng Temple in Kaohsiung. Each reading keeps the source poem and core counsel while using careful contemporary language.</p>
+
+          <div class="about-facts">
+            <div><strong id="fortune-count">100+</strong><span data-i18n="factLots">source notes distilled</span></div>
+            <div><strong>4</strong><span data-i18n="factTopics">areas of focus</span></div>
+            <div><strong>0</strong><span data-i18n="factUploads">questions uploaded</span></div>
+          </div>
+
+          <details>
+            <summary data-i18n="faqOriginQ">Where do these readings come from?</summary>
+            <p>Every lot is independently translated and condensed from the Chinese reference published by <a href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer">Wujia Longcheng Temple</a>. This website is not affiliated with or endorsed by the temple.</p>
+          </details>
+          <details>
+            <summary data-i18n="faqRepeatQ">Should I draw repeatedly for the same question?</summary>
+            <p data-i18n="faqRepeatA">It is usually more helpful to live with the first reading for a while. If the question and circumstances have not changed, repeated draws may only amplify anxiety.</p>
+          </details>
+          <details>
+            <summary data-i18n="faqPaymentQ">Why is the current version free?</summary>
+            <p data-i18n="faqPaymentA">Payment approval depends on the merchant location and business category. The preview will not charge anyone until a provider has approved the business and refund and reading-recovery flows are in place.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="brand footer-brand">
+        <span class="brand-seal" aria-hidden="true">G</span>
+        <span class="brand-copy"><strong data-i18n="brand">Guanyin Oracle</strong><small>QUIET REFLECTIONS</small></span>
+      </div>
+      <div class="footer-notes">
+        <p data-i18n="footerDisclaimer">For cultural appreciation and personal reflection only. Not medical, legal, financial or other professional advice.</p>
+        <a class="footer-source" href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer">Source collection · Wujia Longcheng Temple</a>
+      </div>
+      <span>© <b id="current-year"></b> Guanyin Oracle</span>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="payment-overlay" hidden>
+    <section class="payment-sheet" role="dialog" aria-modal="true" aria-labelledby="payment-title" aria-describedby="payment-description">
+      <button class="sheet-close" id="payment-close" type="button" aria-label="Close">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <span class="sheet-handle" aria-hidden="true"></span>
+      <div class="payment-icon" aria-hidden="true">LOT</div>
+      <p class="section-kicker" id="payment-kicker" data-i18n="paymentKicker">FULL READING</p>
+      <h2 id="payment-title" data-i18n="paymentTitle">Take your time with this lot</h2>
+      <p id="payment-description" data-i18n="paymentDescription">Unlock its imagery, plain-language meaning, guidance for your focus and one reflective question.</p>
+      <div class="purchase-summary">
+        <span id="payment-lot">Lot 28</span>
+        <strong id="payment-price">Free preview</strong>
+      </div>
+      <div class="payment-state" id="payment-state" aria-live="polite">
+        <div class="demo-state" id="demo-state" hidden>
+          <span class="demo-badge" data-i18n="demoBadge">PREVIEW MODE</span>
+          <p data-i18n="demoMessage">Payments are not live yet, so this full reading is available free in the preview.</p>
+          <button class="primary-action compact" id="demo-unlock" type="button" data-i18n="demoUnlock">VIEW THE FULL READING FREE</button>
+        </div>
+        <div class="paypal-state" id="paypal-state" hidden>
+          <p class="payment-loading" id="payment-loading" data-i18n="paymentLoading">Preparing payment…</p>
+          <div id="paypal-button-container"></div>
+          <div class="payment-error" id="payment-error" hidden>
+            <p data-i18n="paymentError">Payment cannot connect right now. Please try again shortly.</p>
+            <button class="secondary-action" id="payment-retry" type="button" data-i18n="retry">Try again</button>
           </div>
         </div>
       </div>
-
-    </div>
-
-    <!-- 免责声明 -->
-    <p class="mt-10 text-[9px] text-center leading-relaxed px-8" style="color:rgba(197,160,89,0.18)">
-      For entertainment and reflective purposes only.<br>
-      Not a substitute for professional advice.
-    </p>
-
-  </main>
-
-
-  <!-- ════════════════════════════════════════════
-       支付弹窗
-  ═════════════════════════════════════════════ -->
-  <div id="payment-overlay"
-       class="hidden fixed inset-0 z-50 flex items-end justify-center"
-       style="background:rgba(0,0,0,0.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);"
-       role="dialog" aria-modal="true" aria-labelledby="payment-title">
-
-    <div class="glass-panel w-full max-w-md rounded-t-[2.5rem] px-8 pt-8 pb-12 text-center shadow-2xl">
-      <div class="w-10 h-1 bg-white/10 rounded-full mx-auto mb-6"></div>
-      <h3 id="payment-title" class="text-2xl font-bold mb-2 gold-text serif">Unlock Your Fate</h3>
-      <p class="text-sm mb-6" style="color:var(--muted)">
-        A sacred interpretation requires a $1.00 offering.
-      </p>
-      <div id="paypal-button-container" class="mb-6"></div>
-      <button onclick="resetApp()"
-              class="text-[10px] uppercase tracking-widest transition-opacity hover:opacity-60"
-              style="color:rgba(197,160,89,0.28)">
-        Cancel &amp; Return
-      </button>
-    </div>
+      <p class="payment-footnote" data-i18n="paymentFootnote">By continuing, you acknowledge that this reading is for culture and reflection only.</p>
+    </section>
   </div>
 
-
-  <!-- ════════════════════════════════════════════
-       结果页
-  ═════════════════════════════════════════════ -->
-  <div id="result-overlay"
-       class="hidden fixed inset-0 z-[60] overflow-y-auto"
-       style="background:var(--deep)"
-       role="main">
-
-    <div id="result-content" class="max-w-md mx-auto px-6 pt-12 pb-36 fade-in"></div>
-
-    <div class="fixed bottom-0 left-0 w-full px-6 pb-8 pt-16"
-         style="background:linear-gradient(to top, var(--deep) 60%, transparent)">
-      <button onclick="resetApp()"
-              class="w-full py-5 rounded-2xl font-bold text-[11px] uppercase tracking-[0.4em] transition-colors"
-              style="background:rgba(197,160,89,0.08); border:1px solid rgba(197,160,89,0.18); color:var(--gold)">
-        Return to Sanctuary
+  <div class="result-view" id="result-overlay" hidden aria-hidden="true">
+    <header class="result-topbar">
+      <button class="icon-button" id="result-back" type="button">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        <span data-i18n="backHome">Back</span>
       </button>
-    </div>
+      <div class="result-brand"><span aria-hidden="true">G</span><b data-i18n="fullReading">Full reading</b></div>
+      <button class="icon-button" id="share-result" type="button">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg>
+        <span data-i18n="share">Share</span>
+      </button>
+    </header>
+
+    <main class="result-main" id="result-main">
+      <article class="reading-paper" id="result-content" aria-labelledby="result-title"></article>
+      <aside class="result-actions" aria-label="Reading actions">
+        <button class="secondary-action" id="copy-result" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></svg>
+          <span data-i18n="copyText">Copy reading</span>
+        </button>
+        <button class="secondary-action" id="print-result" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 8V4h10v4M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg>
+          <span data-i18n="savePrint">Print / Save PDF</span>
+        </button>
+        <button class="primary-action compact" id="result-redraw" type="button" data-i18n="askAgain">Bring a new question</button>
+      </aside>
+    </main>
   </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-  <!-- ════════════════════════════════════════════
-       脚本
-  ═════════════════════════════════════════════ -->
+  <noscript>
+    <div class="noscript">This experience requires JavaScript to draw and reveal a reading.</div>
+  </noscript>
+
   <script src="js/fortunes.js"></script>
   <script src="js/app.js"></script>
-
 </body>
 </html>
