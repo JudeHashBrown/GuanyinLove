@@ -2412,3 +2412,11 @@ body.is-result-open {
   font-size: 15px;
   line-height: 1.85;
 }
+
+.reading-verse {
+  margin: 0 0 8px;
+  padding: 6px 0 30px;
+  text-align: center;
+}
+.reading-verse .reading-section-label { margin-bottom: 14px; }
+.reading-verse .reading-poem { white-space: pre-line; }

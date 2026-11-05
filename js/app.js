@@ -112,10 +112,11 @@ const I18N = {
     metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
+    verseLabel: 'THE VERSE YOU DREW',
     plainMeaningTitle: 'What this lot is saying',
     actionLabel: 'ONE THING TO DO NOW',
-    traditionalTitle: 'The original verse and traditional reading',
-    traditionalHint: 'Tap to read the temple verse and its classic interpretation',
+    traditionalTitle: 'The traditional reading',
+    traditionalHint: 'Tap to read the classic interpretation of this verse',
     toneGood: 'LEANS FAVORABLE',
     toneMixed: 'GOOD WITH PATIENCE',
     toneCareful: 'PROCEED WITH CARE',
@@ -768,7 +769,11 @@ function renderResult() {
   meaning.appendChild(make('span', 'reading-section-label', t('plainMeaningTitle')));
   meaning.appendChild(make('p', 'plain-meaning', plain ? plain.meaning : fortune.interpretation));
 
-  const sections = [header, lead, meaning];
+  const verse = make('section', 'reading-verse');
+  verse.appendChild(make('span', 'reading-section-label', t('verseLabel')));
+  verse.appendChild(make('blockquote', 'reading-poem', fortune.poem));
+
+  const sections = [header, lead, verse, meaning];
 
   if (state.topic !== 'General') {
     const focus = make('section', 'reading-section focus-guidance');
@@ -811,7 +816,6 @@ function renderResult() {
   summary.appendChild(make('span', 'traditional-title', t('traditionalTitle')));
   summary.appendChild(make('span', 'traditional-hint', t('traditionalHint')));
   traditional.appendChild(summary);
-  traditional.appendChild(make('blockquote', 'reading-poem', fortune.poem));
   traditional.appendChild(make('h3', '', fortune.meaning));
   traditional.appendChild(make('p', '', fortune.explanation));
   traditional.appendChild(make('p', '', fortune.interpretation));
