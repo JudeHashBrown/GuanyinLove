@@ -2323,3 +2323,92 @@ body.is-result-open {
     box-shadow: none;
   }
 }
+
+/* Plain-English reading additions */
+.tone-pill {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #fff9ee;
+  background: #8a7b5e;
+}
+.tone-pill.tone-good { background: #5f7d55; }
+.tone-pill.tone-mixed { background: #b2853b; }
+.tone-pill.tone-careful { background: var(--cinnabar); }
+
+.plain-meaning {
+  font-size: 18px !important;
+  color: #403e37 !important;
+}
+
+.action-box {
+  margin: 30px 0 8px;
+  padding: 22px clamp(20px, 5vw, 32px);
+  border-radius: 16px;
+  border: 1px solid rgba(95, 125, 85, 0.35);
+  background: rgba(95, 125, 85, 0.08);
+}
+.action-box small {
+  display: block;
+  margin-bottom: 8px;
+  color: #4f6b47;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.action-box p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 2.6vw, 22px);
+  line-height: 1.6;
+}
+
+.traditional-reading {
+  margin-top: 34px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line-paper);
+  border-bottom: 1px solid var(--line-paper);
+}
+.traditional-reading summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.traditional-reading summary::-webkit-details-marker { display: none; }
+.traditional-title {
+  color: var(--cinnabar);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.traditional-title::after { content: ' +'; }
+.traditional-reading[open] .traditional-title::after { content: ' \2212'; }
+.traditional-hint {
+  color: #7a766c;
+  font-size: 14px;
+}
+.traditional-reading .reading-poem {
+  margin: 22px 0 18px;
+  font-size: clamp(18px, 3vw, 24px);
+  text-align: left;
+  white-space: pre-line;
+}
+.traditional-reading h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+}
+.traditional-reading p {
+  margin: 0 0 12px;
+  color: #5f5c54;
+  font-size: 15px;
+  line-height: 1.85;
+}

@@ -111,6 +111,14 @@ const I18N = {
     pageTitle: 'Guanyin Oracle · A quiet moment of reflection',
     metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
+    shortAnswer: 'THE SHORT ANSWER',
+    plainMeaningTitle: 'What this lot is saying',
+    actionLabel: 'ONE THING TO DO NOW',
+    traditionalTitle: 'The original verse and traditional reading',
+    traditionalHint: 'Tap to read the temple verse and its classic interpretation',
+    toneGood: 'LEANS FAVORABLE',
+    toneMixed: 'GOOD WITH PATIENCE',
+    toneCareful: 'PROCEED WITH CARE',
     generalGuidance: 'Read this lot as a view of your situation as a whole. Notice the line that moves you first, then consider the three areas below.',
     reflectionFallback: 'Which part of this lot deserves a slower, more honest look?'
   }
@@ -200,7 +208,19 @@ function getFortuneContent(id) {
     return fortune.id === Number(id);
   });
   if (!base) return null;
-  return Object.assign({}, base, { grade: t('sourceBadge') });
+  const plain = (typeof PLAIN_DB !== 'undefined' && PLAIN_DB[base.id]) || null;
+  return Object.assign({}, base, { grade: t('sourceBadge'), plain: plain });
+}
+
+function toneLabel(fortune) {
+  if (!fortune || !fortune.plain) return t('sourceBadge');
+  if (fortune.plain.tone === 'good') return t('toneGood');
+  if (fortune.plain.tone === 'careful') return t('toneCareful');
+  return t('toneMixed');
+}
+
+function plainAdvice(fortune, topic) {
+  return (fortune.plain && fortune.plain[topic]) || fortune.advice[topic];
 }
 
 function topicLabel(topic) {
@@ -342,9 +362,9 @@ function renderPreview() {
   if (!fortune) return;
 
   elements.previewTitle.textContent = lotShortLabel(fortune);
-  elements.previewGrade.textContent = t('sourceBadge');
+  elements.previewGrade.textContent = toneLabel(fortune);
   elements.previewPoem.textContent = fortune.poem;
-  elements.previewSummary.textContent = fortune.explanation;
+  elements.previewSummary.textContent = fortune.plain ? fortune.plain.bottomLine : fortune.explanation;
   elements.previewSource.href = fortune.sourceUrl;
   elements.paymentLot.textContent = lotShortLabel(fortune);
 
@@ -729,8 +749,8 @@ function renderResult() {
   const title = make('h1', '', lotShortLabel(fortune));
   title.id = 'result-title';
   title.tabIndex = -1;
-  const poem = make('blockquote', 'reading-poem', fortune.poem);
-  header.append(meta, title, poem);
+  const tone = make('span', 'tone-pill tone-' + ((fortune.plain && fortune.plain.tone) || 'mixed'), toneLabel(fortune));
+  header.append(meta, title, tone);
 
   if (state.question) {
     const question = make('div', 'reading-question');
@@ -739,26 +759,26 @@ function renderResult() {
     header.appendChild(question);
   }
 
+  const plain = fortune.plain;
   const lead = make('section', 'reading-lead');
-  lead.appendChild(make('small', '', t('overallReading')));
-  lead.appendChild(make('p', '', fortune.explanation));
+  lead.appendChild(make('small', '', plain ? t('shortAnswer') : t('overallReading')));
+  lead.appendChild(make('p', '', plain ? plain.bottomLine : fortune.explanation));
 
-  const imagery = make('section', 'reading-section');
-  imagery.appendChild(make('span', 'reading-section-label', t('imageryTitle')));
-  imagery.appendChild(make('h2', '', fortune.meaning));
-  imagery.appendChild(make('p', '', fortune.interpretation));
+  const meaning = make('section', 'reading-section');
+  meaning.appendChild(make('span', 'reading-section-label', t('plainMeaningTitle')));
+  meaning.appendChild(make('p', 'plain-meaning', plain ? plain.meaning : fortune.interpretation));
 
-  const focus = make('section', 'reading-section focus-guidance');
-  focus.appendChild(make('span', 'reading-section-label', t('focusTitle')));
-  const focusHeading = make('h2');
-  focusHeading.appendChild(make('span', '', topicLabel(state.topic).slice(0, 1)));
-  focusHeading.appendChild(document.createTextNode(topicLabel(state.topic)));
-  focus.appendChild(focusHeading);
+  const sections = [header, lead, meaning];
 
-  if (state.topic === 'General') {
-    focus.appendChild(make('p', '', t('generalGuidance')));
-  } else {
-    focus.appendChild(make('p', '', fortune.advice[state.topic]));
+  if (state.topic !== 'General') {
+    const focus = make('section', 'reading-section focus-guidance');
+    focus.appendChild(make('span', 'reading-section-label', t('focusTitle')));
+    const focusHeading = make('h2');
+    focusHeading.appendChild(make('span', '', topicLabel(state.topic).slice(0, 1)));
+    focusHeading.appendChild(document.createTextNode(topicLabel(state.topic)));
+    focus.appendChild(focusHeading);
+    focus.appendChild(make('p', '', plainAdvice(fortune, state.topic)));
+    sections.push(focus);
   }
 
   const dimensions = make('section', 'reading-section');
@@ -768,23 +788,44 @@ function renderResult() {
     const card = make('article', 'advice-card');
     if (topic === state.topic) card.classList.add('is-focus');
     card.appendChild(make('h3', '', topicLabel(topic)));
-    card.appendChild(make('p', '', fortune.advice[topic]));
+    card.appendChild(make('p', '', plainAdvice(fortune, topic)));
     grid.appendChild(card);
   });
   dimensions.appendChild(grid);
+  sections.push(dimensions);
+
+  if (plain && plain.action) {
+    const action = make('section', 'action-box');
+    action.appendChild(make('small', '', t('actionLabel')));
+    action.appendChild(make('p', '', plain.action));
+    sections.push(action);
+  }
 
   const reflection = make('section', 'reflection-box');
   reflection.appendChild(make('small', '', t('reflectionLabel')));
   reflection.appendChild(make('p', '', readingReflection(fortune)));
+  sections.push(reflection);
 
-  const disclaimer = make('p', 'reading-disclaimer', t('resultDisclaimer'));
+  const traditional = make('details', 'traditional-reading');
+  const summary = make('summary');
+  summary.appendChild(make('span', 'traditional-title', t('traditionalTitle')));
+  summary.appendChild(make('span', 'traditional-hint', t('traditionalHint')));
+  traditional.appendChild(summary);
+  traditional.appendChild(make('blockquote', 'reading-poem', fortune.poem));
+  traditional.appendChild(make('h3', '', fortune.meaning));
+  traditional.appendChild(make('p', '', fortune.explanation));
+  traditional.appendChild(make('p', '', fortune.interpretation));
+  sections.push(traditional);
+
   const source = make('p', 'reading-source');
   const sourceLink = make('a', '', t('sourceLink'));
   sourceLink.href = fortune.sourceUrl;
   sourceLink.target = '_blank';
   sourceLink.rel = 'noopener noreferrer';
   source.appendChild(sourceLink);
-  elements.resultContent.append(header, lead, imagery, focus, dimensions, reflection, source, disclaimer);
+  const disclaimer = make('p', 'reading-disclaimer', t('resultDisclaimer'));
+  sections.push(source, disclaimer);
+  elements.resultContent.append.apply(elements.resultContent, sections);
 }
 
 function getHistory() {
@@ -865,15 +906,19 @@ function clearHistory() {
 function buildShareText() {
   if (!state.selectedFortune) return '';
   const fortune = getFortuneContent(state.selectedFortune.id);
+  const plain = fortune.plain;
   const focusText = state.topic === 'General'
-    ? fortune.explanation
-    : fortune.advice[state.topic];
+    ? (plain ? plain.meaning : fortune.explanation)
+    : plainAdvice(fortune, state.topic);
   return [
-    '[' + lotShortLabel(fortune) + ']',
-    fortune.poem,
+    '[' + lotShortLabel(fortune) + ' \u00b7 ' + toneLabel(fortune) + ']',
     '',
-    t('overallReading') + ': ' + fortune.explanation,
+    (plain ? plain.bottomLine : fortune.explanation),
+    '',
     topicLabel(state.topic) + ': ' + focusText,
+    plain && plain.action ? t('actionLabel') + ': ' + plain.action : '',
+    '',
+    fortune.poem,
     '',
     t('footerDisclaimer'),
     t('sourceLink') + ': ' + fortune.sourceUrl
