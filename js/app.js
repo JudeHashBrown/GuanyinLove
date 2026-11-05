@@ -31,7 +31,7 @@ const I18N = {
     privacyNote: 'Your question stays on this device and is never uploaded',
     drawButton: 'DRAW A FORTUNE',
     freePreview: 'Lot number and first insight are free',
-    fullPrice: 'Full reading · Free in preview',
+    fullPrice: 'Full reading · US$10',
     visualCaption: 'Take three quiet breaths, then draw',
     previewKicker: 'YOUR DRAW',
     yourQuestion: 'THE QUESTION IN YOUR HEART',
@@ -64,8 +64,12 @@ const I18N = {
     faqOriginQ: 'Where do these readings come from?',
     faqRepeatQ: 'Should I draw repeatedly for the same question?',
     faqRepeatA: 'It is usually more helpful to live with the first reading for a while. If the question and circumstances have not changed, repeated draws may only amplify anxiety.',
-    faqPaymentQ: 'Why is the current version free?',
-    faqPaymentA: 'Payment approval depends on the merchant location and business category. The preview will not charge anyone until a provider has approved the business and refund and reading-recovery flows are in place.',
+    faqPaymentQ: 'How does payment work?',
+    faqPaymentA: 'Full readings are US$10 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt on the same device to reveal your reading.',
+    gumroadMessage: 'Checkout opens securely on Gumroad. After paying, open the link in your receipt and your full reading will appear here.',
+    gumroadBuy: 'UNLOCK FOR US$10',
+    gumroadUnlocked: 'Thank you. Your full reading is unlocked.',
+    gumroadCredit: 'Thank you. Your reading is unlocked — draw your lot and tap Read the full interpretation.',
     footerDisclaimer: 'For cultural appreciation and personal reflection only. Not medical, legal, financial or other professional advice.',
     paymentKicker: 'FULL READING',
     paymentTitle: 'Take your time with this lot',
@@ -114,7 +118,9 @@ const I18N = {
 
 const TOPIC_KEYS = ['Love', 'Career', 'Wealth'];
 const STORAGE_KEYS = {
-  history: 'guanyin-oracle-history-v2'
+  history: 'guanyin-oracle-history-v2',
+  pending: 'guanyin-oracle-pending-v1',
+  credit: 'guanyin-oracle-credit-v1'
 };
 
 const state = {
@@ -351,9 +357,7 @@ function renderPreview() {
   }
 
   const demoMode = !paymentIsConfigured();
-  elements.unlockPrice.textContent = demoMode
-    ? 'Free preview'
-    : getPaymentDisplayPrice();
+  elements.unlockPrice.textContent = demoMode ? priceLabel() : getPaymentDisplayPrice();
 
   elements.previewSection.hidden = false;
   requestAnimationFrame(function () {
@@ -409,13 +413,64 @@ function getPaymentDisplayPrice() {
   return (document.body.getAttribute('data-payment-display-price') || '').trim();
 }
 
+function getGumroadUrl() {
+  return (document.body.getAttribute('data-gumroad-url') || '').trim();
+}
+
+function gumroadIsConfigured() {
+  return Boolean(getGumroadUrl());
+}
+
+function priceLabel() {
+  if (paymentIsConfigured() || gumroadIsConfigured()) return getPaymentDisplayPrice();
+  return 'Free preview';
+}
+
+function startGumroadCheckout() {
+  if (!state.selectedFortune) return;
+  safeStorageSet(STORAGE_KEYS.pending, JSON.stringify({
+    id: state.selectedFortune.id,
+    topic: state.topic,
+    question: state.question,
+    timestamp: Date.now()
+  }));
+}
+
+function handleGumroadReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('unlock');
+  if (!code) return;
+  const expected = (document.body.getAttribute('data-unlock-code') || '').trim();
+  params.delete('unlock');
+  const clean = window.location.pathname + (params.toString() ? '?' + params : '') + window.location.hash;
+  window.history.replaceState(null, '', clean);
+  if (!expected || code !== expected) return;
+
+  let pending = null;
+  try { pending = JSON.parse(safeStorageGet(STORAGE_KEYS.pending, 'null')); } catch (_e) { pending = null; }
+  safeStorageRemove(STORAGE_KEYS.pending);
+  const source = pending && getFortuneDatabase().find(function (item) {
+    return item.id === Number(pending.id);
+  });
+  if (source) {
+    state.selectedFortune = source;
+    state.topic = pending.topic || 'General';
+    state.question = pending.question || '';
+    showFullResult();
+    showToast(t('gumroadUnlocked'));
+  } else {
+    safeStorageSet(STORAGE_KEYS.credit, '1');
+    showToast(t('gumroadCredit'));
+  }
+}
+
 function paymentIsConfigured() {
   return document.body.getAttribute('data-payments-enabled') === 'true' &&
     Boolean(getPayPalClientId() && getPaymentApi() && getPaymentDisplayPrice());
 }
 
 function updatePaymentLabels() {
-  const live = paymentIsConfigured();
+  const live = paymentIsConfigured() || gumroadIsConfigured();
   if (elements.fullPriceNote) {
     elements.fullPriceNote.textContent = live
       ? 'Full reading · ' + getPaymentDisplayPrice()
@@ -435,6 +490,12 @@ function updatePaymentLabels() {
 
 function openPayment() {
   if (!state.selectedFortune) return;
+  if (!paymentIsConfigured() && gumroadIsConfigured() &&
+      safeStorageGet(STORAGE_KEYS.credit, '') === '1') {
+    safeStorageRemove(STORAGE_KEYS.credit);
+    showFullResult();
+    return;
+  }
   state.lastFocused = document.activeElement;
   elements.paymentOverlay.hidden = false;
   document.body.classList.add('is-modal-open');
@@ -445,14 +506,15 @@ function openPayment() {
   const clientId = getPayPalClientId();
   const paymentApi = getPaymentApi();
   const live = paymentIsConfigured();
-  elements.demoState.hidden = live;
+  const gumroad = !live && gumroadIsConfigured();
+  elements.demoState.hidden = live || gumroad;
+  elements.gumroadState.hidden = !gumroad;
+  if (gumroad) elements.gumroadBuy.href = getGumroadUrl() + '?wanted=true';
   elements.paypalState.hidden = !live;
   elements.paymentLoading.textContent = t('paymentLoading');
   elements.paymentLoading.hidden = live && state.paypalRendered;
   elements.paymentError.hidden = true;
-  elements.paymentPrice.textContent = live
-    ? getPaymentDisplayPrice()
-    : 'Free preview';
+  elements.paymentPrice.textContent = priceLabel();
 
   requestAnimationFrame(function () {
     elements.paymentClose.focus();
@@ -896,6 +958,8 @@ function cacheElements() {
     paymentPrice: byId('payment-price'),
     demoState: byId('demo-state'),
     demoUnlock: byId('demo-unlock'),
+    gumroadState: byId('gumroad-state'),
+    gumroadBuy: byId('gumroad-buy'),
     paypalState: byId('paypal-state'),
     paymentLoading: byId('payment-loading'),
     paymentError: byId('payment-error'),
@@ -925,6 +989,7 @@ function bindEvents() {
     if (event.target === elements.paymentOverlay) closePayment(true);
   });
   elements.demoUnlock.addEventListener('click', showFullResult);
+  elements.gumroadBuy.addEventListener('click', startGumroadCheckout);
   elements.paymentRetry.addEventListener('click', retryPayment);
   elements.resultBack.addEventListener('click', function () { closeResult(); });
   elements.resultRedraw.addEventListener('click', function () { closeResult({ redraw: true }); });
@@ -943,6 +1008,7 @@ function init() {
 
   applyEnglishCopy();
   setProgress(1);
+  handleGumroadReturn();
 }
 
 init();
