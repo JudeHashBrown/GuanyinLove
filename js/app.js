@@ -87,6 +87,9 @@ const I18N = {
     sampleButton: 'See a full sample reading →',
     sampleBanner: 'SAMPLE READING · This is what every full reading looks like',
     sampleCta: 'Draw my own lot',
+    founderOn: 'Founder access is on for this device. Every full reading is free here.',
+    founderOff: 'Founder access turned off on this device.',
+    founderPrice: 'FOUNDER · FREE',
     demoBadge: 'PREVIEW MODE',
     whisperLockHint: 'The rest of Guanyin\u2019s whisper opens with your full reading.',
     demoMessage: 'Payments are not live yet, so this full reading is available free in the preview.',
@@ -143,7 +146,8 @@ const TOPIC_KEYS = ['Love', 'Career', 'Wealth'];
 const STORAGE_KEYS = {
   history: 'guanyin-oracle-history-v2',
   pending: 'guanyin-oracle-pending-v1',
-  credit: 'guanyin-oracle-credit-v1'
+  credit: 'guanyin-oracle-credit-v1',
+  founder: 'guanyin-oracle-founder-v1'
 };
 
 const state = {
@@ -401,7 +405,7 @@ function renderPreview() {
   }
 
   const demoMode = !paymentIsConfigured();
-  elements.unlockPrice.textContent = demoMode ? priceLabel() : getPaymentDisplayPrice();
+  elements.unlockPrice.textContent = isFounder() ? t('founderPrice') : (demoMode ? priceLabel() : getPaymentDisplayPrice());
 
   elements.previewSection.hidden = false;
   requestAnimationFrame(function () {
@@ -495,6 +499,29 @@ function startGumroadCheckout() {
   }));
 }
 
+function isFounder() {
+  return safeStorageGet(STORAGE_KEYS.founder, '') === '1';
+}
+
+// Founders open the site once with ?founder=CODE (or ?founder=off to remove).
+function handleFounderLink() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('founder');
+  if (!code) return;
+  params.delete('founder');
+  const clean = window.location.pathname + (params.toString() ? '?' + params : '') + window.location.hash;
+  window.history.replaceState(null, '', clean);
+  if (code === 'off') {
+    safeStorageRemove(STORAGE_KEYS.founder);
+    showToast(t('founderOff'));
+    return;
+  }
+  const expected = (document.body.getAttribute('data-founder-code') || '').trim();
+  if (!expected || code !== expected) return;
+  safeStorageSet(STORAGE_KEYS.founder, '1');
+  showToast(t('founderOn'));
+}
+
 function handleGumroadReturn() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('unlock');
@@ -549,6 +576,10 @@ function updatePaymentLabels() {
 
 function openPayment() {
   if (!state.selectedFortune) return;
+  if (isFounder()) {
+    showFullResult();
+    return;
+  }
   if (!paymentIsConfigured() && gumroadIsConfigured() &&
       safeStorageGet(STORAGE_KEYS.credit, '') === '1') {
     safeStorageRemove(STORAGE_KEYS.credit);
@@ -1161,6 +1192,7 @@ function init() {
 
   applyEnglishCopy();
   setProgress(1);
+  handleFounderLink();
   handleGumroadReturn();
 }
 
