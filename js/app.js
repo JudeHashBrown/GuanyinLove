@@ -75,6 +75,7 @@ const I18N = {
     paymentTitle: 'Take your time with this lot',
     paymentDescription: 'Unlock its imagery, plain-language meaning, guidance for your focus and one reflective question.',
     demoBadge: 'PREVIEW MODE',
+    whisperLockHint: 'The rest of Guanyin\u2019s whisper opens with your full reading.',
     demoMessage: 'Payments are not live yet, so this full reading is available free in the preview.',
     demoUnlock: 'VIEW THE FULL READING FREE',
     paymentLoading: 'Preparing payment…',
@@ -210,7 +211,8 @@ function getFortuneContent(id) {
   });
   if (!base) return null;
   const plain = (typeof PLAIN_DB !== 'undefined' && PLAIN_DB[base.id]) || null;
-  return Object.assign({}, base, { grade: t('sourceBadge'), plain: plain });
+  const whisper = (typeof WHISPER_DB !== 'undefined' && WHISPER_DB[base.id]) || base.poem;
+  return Object.assign({}, base, { grade: t('sourceBadge'), plain: plain, whisper: whisper });
 }
 
 function toneLabel(fortune) {
@@ -364,8 +366,10 @@ function renderPreview() {
 
   elements.previewTitle.textContent = lotShortLabel(fortune);
   elements.previewGrade.textContent = toneLabel(fortune);
-  elements.previewPoem.textContent = fortune.poem;
-  elements.previewSummary.textContent = fortune.plain ? fortune.plain.bottomLine : fortune.explanation;
+  renderWhisperPreview(elements.previewPoem, fortune.whisper);
+  // The short answer is part of the paid reading, so the free preview stays a teaser.
+  elements.previewSummary.textContent = '';
+  elements.previewSummary.hidden = true;
   elements.previewSource.href = fortune.sourceUrl;
   elements.paymentLot.textContent = lotShortLabel(fortune);
 
@@ -388,6 +392,21 @@ function renderPreview() {
     });
     elements.previewTitle.focus({ preventScroll: true });
   });
+}
+
+// Free preview: show the first three-quarters of Guanyin's whisper, soften the rest.
+function renderWhisperPreview(container, whisper) {
+  container.innerHTML = '';
+  const lines = String(whisper || '').split('\n').filter(Boolean);
+  const visibleCount = Math.max(1, Math.min(lines.length - 1, Math.ceil(lines.length * 0.75)));
+  lines.forEach(function (line, index) {
+    const span = make('span', index < visibleCount ? 'whisper-line' : 'whisper-line is-locked', line);
+    if (index >= visibleCount) span.setAttribute('aria-hidden', 'true');
+    container.appendChild(span);
+  });
+  if (visibleCount < lines.length) {
+    container.appendChild(make('span', 'whisper-lock-hint', t('whisperLockHint')));
+  }
 }
 
 function resetOracle(options) {
@@ -771,7 +790,7 @@ function renderResult() {
 
   const verse = make('section', 'reading-verse');
   verse.appendChild(make('span', 'reading-section-label', t('verseLabel')));
-  verse.appendChild(make('blockquote', 'reading-poem', fortune.poem));
+  verse.appendChild(make('blockquote', 'reading-poem', fortune.whisper));
 
   const sections = [header, lead, verse, meaning];
 
@@ -816,6 +835,7 @@ function renderResult() {
   summary.appendChild(make('span', 'traditional-title', t('traditionalTitle')));
   summary.appendChild(make('span', 'traditional-hint', t('traditionalHint')));
   traditional.appendChild(summary);
+  traditional.appendChild(make('blockquote', 'reading-poem traditional-poem', fortune.poem));
   traditional.appendChild(make('h3', '', fortune.meaning));
   traditional.appendChild(make('p', '', fortune.explanation));
   traditional.appendChild(make('p', '', fortune.interpretation));
@@ -878,7 +898,7 @@ function renderHistory() {
 
     const copy = make('div');
     copy.appendChild(make('h3', '', lotShortLabel(fortune)));
-    copy.appendChild(make('p', '', fortune.poem));
+    copy.appendChild(make('p', '', fortune.whisper.split('\n')[0]));
     const date = new Intl.DateTimeFormat('en', {
       month: 'short',
       day: 'numeric'
@@ -922,7 +942,7 @@ function buildShareText() {
     topicLabel(state.topic) + ': ' + focusText,
     plain && plain.action ? t('actionLabel') + ': ' + plain.action : '',
     '',
-    fortune.poem,
+    fortune.whisper,
     '',
     t('footerDisclaimer'),
     t('sourceLink') + ': ' + fortune.sourceUrl
