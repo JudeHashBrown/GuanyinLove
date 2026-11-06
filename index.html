@@ -15,7 +15,7 @@
   <title>Guanyin Oracle · A quiet moment of reflection</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/temple-oracle.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="stylesheet" href="css/styles.css?v=6">
 </head>
 
 <body data-payments-enabled="false" data-paypal-client-id="" data-payment-api="" data-payment-display-price="US$5" data-gumroad-url="https://whisperinglove.gumroad.com/l/ikfmaf" data-unlock-code="lotus-k7m3q9">
@@ -167,10 +167,16 @@
 
           <div class="preview-actions">
             <button class="primary-action compact" id="unlock-btn" type="button">
-              <span data-i18n="unlockButton">READ THE FULL INTERPRETATION</span>
+              <span data-i18n="unlockButton">UNLOCK THE COMPLETE READING</span>
               <small id="unlock-price">Free preview</small>
             </button>
             <button class="text-action" id="redraw-btn" type="button" data-i18n="redrawButton">Ask a different question</button>
+          </div>
+
+          <div class="includes-box">
+            <p class="includes-title" data-i18n="includesTitle">YOUR COMPLETE READING INCLUDES</p>
+            <ul class="includes-list"></ul>
+            <button class="sample-link" id="sample-btn" type="button" data-i18n="sampleButton">See a full sample reading →</button>
           </div>
         </div>
       </section>
@@ -286,7 +292,9 @@
       <div class="payment-icon" aria-hidden="true">LOT</div>
       <p class="section-kicker" id="payment-kicker" data-i18n="paymentKicker">FULL READING</p>
       <h2 id="payment-title" data-i18n="paymentTitle">Take your time with this lot</h2>
-      <p id="payment-description" data-i18n="paymentDescription">Unlock its imagery, plain-language meaning, guidance for your focus and one reflective question.</p>
+      <p id="payment-description" data-i18n="paymentDescription">Not just the last line — the complete reading of your lot.</p>
+      <ul class="includes-list includes-dark"></ul>
+      <button class="sample-link sample-link-dark" id="payment-sample-btn" type="button" data-i18n="sampleButton">See a full sample reading →</button>
       <div class="purchase-summary">
         <span id="payment-lot">Lot 28</span>
         <strong id="payment-price">Free preview</strong>
@@ -349,9 +357,9 @@
     <div class="noscript">This experience requires JavaScript to draw and reveal a reading.</div>
   </noscript>
 
-  <script src="js/fortunes.js?v=5"></script>
-  <script src="js/plain.js?v=5"></script>
-  <script src="js/whisper.js?v=5"></script>
-  <script src="js/app.js?v=5"></script>
+  <script src="js/fortunes.js?v=6"></script>
+  <script src="js/plain.js?v=6"></script>
+  <script src="js/whisper.js?v=6"></script>
+  <script src="js/app.js?v=6"></script>
 </body>
 </html>

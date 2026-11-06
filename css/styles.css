@@ -2448,3 +2448,80 @@ body.is-result-open {
 }
 .reading-verse .reading-section-label { margin-bottom: 14px; }
 .reading-verse .reading-poem { white-space: pre-line; }
+
+/* ---- Complete-reading includes list + sample reading ---- */
+.includes-box {
+  margin-top: 22px;
+  padding: 18px 22px 16px;
+  border: 1px solid var(--line-paper);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.45);
+}
+.includes-title {
+  margin: 0 0 10px;
+  color: var(--cinnabar-dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.includes-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #48463f;
+  font-size: 14px;
+  text-align: left;
+}
+.includes-list li {
+  position: relative;
+  padding-left: 22px;
+  line-height: 1.4;
+}
+.includes-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--cinnabar);
+  font-weight: 700;
+}
+.includes-dark {
+  grid-template-columns: 1fr;
+  margin: 16px auto 4px;
+  max-width: 340px;
+  color: #ddd8cb;
+}
+.includes-dark li::before { color: var(--brass-light); }
+.sample-link {
+  margin-top: 12px;
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  color: var(--cinnabar-dark);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sample-link:hover { color: var(--cinnabar); }
+.sample-link-dark { margin: 6px 0 18px; color: var(--brass-light); }
+.sample-link-dark:hover { color: #fff3cf; }
+.sample-banner {
+  margin: 0 0 22px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #fff7e6;
+  background: linear-gradient(135deg, var(--cinnabar-bright), var(--cinnabar-dark));
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+.sample-banner p { margin: 0; }
+.sample-cta { display: flex; margin: 28px auto 0; }
+@media (max-width: 640px) {
+  .includes-list { grid-template-columns: 1fr; }
+}

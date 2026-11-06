@@ -35,7 +35,7 @@ const I18N = {
     visualCaption: 'Take three quiet breaths, then draw',
     previewKicker: 'YOUR DRAW',
     yourQuestion: 'THE QUESTION IN YOUR HEART',
-    unlockButton: 'READ THE FULL INTERPRETATION',
+    unlockButton: 'UNLOCK THE COMPLETE READING',
     redrawButton: 'Ask a different question',
     trustPrivateTitle: 'Private by design',
     trustPrivateText: 'Your question stays on this device',
@@ -69,11 +69,24 @@ const I18N = {
     gumroadMessage: 'Checkout opens securely on Gumroad. After paying, open the link in your receipt and your full reading will appear here.',
     gumroadBuy: 'UNLOCK FOR US$5',
     gumroadUnlocked: 'Thank you. Your full reading is unlocked.',
-    gumroadCredit: 'Thank you. Your reading is unlocked — draw your lot and tap Read the full interpretation.',
+    gumroadCredit: 'Thank you. Your reading is unlocked — draw your lot and tap Unlock the complete reading.',
     footerDisclaimer: 'For cultural appreciation and personal reflection only. Not medical, legal, financial or other professional advice.',
     paymentKicker: 'FULL READING',
     paymentTitle: 'Take your time with this lot',
-    paymentDescription: 'Unlock its imagery, plain-language meaning, guidance for your focus and one reflective question.',
+    paymentDescription: 'Not just the last line — the complete reading of your lot.',
+    includesTitle: 'YOUR COMPLETE READING INCLUDES',
+    includesItems: [
+      'The short answer to your question',
+      'The full verse in plain English',
+      'What this lot is really saying',
+      'Personal guidance for what you asked',
+      'Love, career & wealth guidance',
+      'One thing to do now + a question to keep',
+      'The traditional reading & original Chinese source'
+    ],
+    sampleButton: 'See a full sample reading →',
+    sampleBanner: 'SAMPLE READING · This is what every full reading looks like',
+    sampleCta: 'Draw my own lot',
     demoBadge: 'PREVIEW MODE',
     whisperLockHint: 'The rest of Guanyin\u2019s whisper opens with your full reading.',
     demoMessage: 'Payments are not live yet, so this full reading is available free in the preview.',
@@ -257,6 +270,12 @@ function applyEnglishCopy() {
   const description = document.querySelector('meta[name="description"]');
   if (description) description.setAttribute('content', t('metaDescription'));
 
+  document.querySelectorAll('.includes-list').forEach(function (list) {
+    list.innerHTML = '';
+    t('includesItems').forEach(function (item) {
+      list.appendChild(make('li', '', item));
+    });
+  });
   document.querySelectorAll('[data-i18n]').forEach(function (node) {
     const key = node.getAttribute('data-i18n');
     if (key === 'heroTitle') {
@@ -732,8 +751,71 @@ function showFullResult() {
   });
 }
 
+const SAMPLE_LOT_ID = 12;
+
+function showSample() {
+  const sample = getFortuneDatabase().find(function (item) { return item.id === SAMPLE_LOT_ID; }) ||
+    getFortuneDatabase()[0];
+  if (!sample) return;
+  state.sampleBackup = {
+    fortune: state.selectedFortune,
+    topic: state.topic,
+    question: state.question,
+    paymentOpen: !elements.paymentOverlay.hidden
+  };
+  if (state.sampleBackup.paymentOpen) closePayment(false);
+  state.isSample = true;
+  state.selectedFortune = sample;
+  state.topic = 'Wealth';
+  state.question = 'When will my money situation finally get better?';
+  renderResult();
+  const banner = make('div', 'sample-banner');
+  banner.appendChild(make('p', '', t('sampleBanner')));
+  elements.resultContent.insertBefore(banner, elements.resultContent.firstChild);
+  const cta = make('button', 'primary-action compact sample-cta', t('sampleCta'));
+  cta.type = 'button';
+  cta.addEventListener('click', function () { closeResult(); });
+  elements.resultContent.appendChild(cta);
+  elements.resultOverlay.hidden = false;
+  elements.resultOverlay.setAttribute('aria-hidden', 'false');
+  elements.siteShell.inert = true;
+  elements.siteShell.setAttribute('aria-hidden', 'true');
+  document.body.classList.add('is-result-open', 'is-sample');
+  elements.resultOverlay.scrollTop = 0;
+}
+
+function endSample() {
+  const backup = state.sampleBackup || {};
+  state.isSample = false;
+  state.selectedFortune = backup.fortune || null;
+  state.topic = backup.topic || 'General';
+  state.question = backup.question || '';
+  state.sampleBackup = null;
+  elements.resultOverlay.hidden = true;
+  elements.resultOverlay.setAttribute('aria-hidden', 'true');
+  elements.siteShell.inert = false;
+  elements.siteShell.removeAttribute('aria-hidden');
+  document.body.classList.remove('is-result-open', 'is-sample');
+  if (backup.paymentOpen && state.selectedFortune) {
+    openPayment();
+  } else if (state.selectedFortune && !elements.previewSection.hidden) {
+    requestAnimationFrame(function () {
+      elements.unlockBtn.scrollIntoView({ block: 'center' });
+      elements.unlockBtn.focus({ preventScroll: true });
+    });
+  } else {
+    const form = elements.questionForm;
+    if (form) form.scrollIntoView({ block: 'center' });
+  }
+}
+
 function closeResult(options) {
   const settings = options || {};
+  if (state.isSample) {
+    endSample();
+    if (settings.redraw) resetOracle();
+    return;
+  }
   elements.resultOverlay.hidden = true;
   elements.resultOverlay.setAttribute('aria-hidden', 'true');
   elements.siteShell.inert = false;
@@ -1051,6 +1133,8 @@ function bindEvents() {
     elements.questionCount.textContent = String(elements.questionInput.value.length);
   });
   elements.unlockBtn.addEventListener('click', openPayment);
+  byId('sample-btn').addEventListener('click', showSample);
+  byId('payment-sample-btn').addEventListener('click', showSample);
   elements.redrawBtn.addEventListener('click', function () { resetOracle(); });
   elements.paymentClose.addEventListener('click', function () { closePayment(true); });
   elements.paymentOverlay.addEventListener('keydown', handlePaymentKeydown);
