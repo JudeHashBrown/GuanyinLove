@@ -90,6 +90,8 @@ const I18N = {
     founderOn: 'Founder access is on for this device. Every full reading is free here.',
     founderOff: 'Founder access turned off on this device.',
     founderPrice: 'FOUNDER · FREE',
+    trialPrice: 'FIRST READING FREE',
+    trialGift: 'Your first full reading is a gift from Guanyin Love. Future readings are US$5.',
     demoBadge: 'PREVIEW MODE',
     whisperLockHint: 'The rest of Guanyin\u2019s whisper opens with your full reading.',
     demoMessage: 'Payments are not live yet, so this full reading is available free in the preview.',
@@ -147,7 +149,8 @@ const STORAGE_KEYS = {
   history: 'guanyin-oracle-history-v2',
   pending: 'guanyin-oracle-pending-v1',
   credit: 'guanyin-oracle-credit-v1',
-  founder: 'guanyin-oracle-founder-v1'
+  founder: 'guanyin-oracle-founder-v1',
+  trial: 'guanyin-oracle-trial-v1'
 };
 
 const state = {
@@ -405,7 +408,9 @@ function renderPreview() {
   }
 
   const demoMode = !paymentIsConfigured();
-  elements.unlockPrice.textContent = isFounder() ? t('founderPrice') : (demoMode ? priceLabel() : getPaymentDisplayPrice());
+  elements.unlockPrice.textContent = isFounder()
+    ? t('founderPrice')
+    : hasFreeTrial() ? t('trialPrice') : (demoMode ? priceLabel() : getPaymentDisplayPrice());
 
   elements.previewSection.hidden = false;
   requestAnimationFrame(function () {
@@ -499,6 +504,11 @@ function startGumroadCheckout() {
   }));
 }
 
+// Every visitor gets one complete reading free, so they can see what a paid reading includes.
+function hasFreeTrial() {
+  return gumroadIsConfigured() && safeStorageGet(STORAGE_KEYS.trial, '') !== 'used';
+}
+
 function isFounder() {
   return safeStorageGet(STORAGE_KEYS.founder, '') === '1';
 }
@@ -578,6 +588,12 @@ function openPayment() {
   if (!state.selectedFortune) return;
   if (isFounder()) {
     showFullResult();
+    return;
+  }
+  if (hasFreeTrial()) {
+    safeStorageSet(STORAGE_KEYS.trial, 'used');
+    showFullResult();
+    showToast(t('trialGift'));
     return;
   }
   if (!paymentIsConfigured() && gumroadIsConfigured() &&
