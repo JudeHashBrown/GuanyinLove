@@ -15,7 +15,7 @@
   <title>Guanyin Oracle · A quiet moment of reflection</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/temple-oracle.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/styles.css?v=7">
+  <link rel="stylesheet" href="css/styles.css?v=8">
   <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -277,7 +277,7 @@
           </details>
           <details>
             <summary data-i18n="faqPaymentQ">How does payment work?</summary>
-            <p data-i18n="faqPaymentA">Full readings are US$5 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt on the same device to reveal your reading.</p>
+            <p data-i18n="faqPaymentA">Full readings are US$5 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt to reveal your reading. If it opens in a different browser, just enter the lot number you drew.</p>
           </details>
         </div>
       </section>
@@ -321,7 +321,21 @@
         </div>
         <div class="demo-state" id="gumroad-state" hidden>
           <p data-i18n="gumroadMessage">Checkout opens securely on Gumroad. After paying, open the link in your receipt and your full reading will appear here.</p>
+          <p class="lot-reminder" id="gumroad-lot-reminder"></p>
           <a class="primary-action compact" id="gumroad-buy" href="https://whisperinglove.gumroad.com/l/ikfmaf" target="_blank" rel="noopener" data-i18n="gumroadBuy">UNLOCK FOR US$5</a>
+        </div>
+        <div class="demo-state claim-state" id="claim-state" hidden>
+          <p data-i18n="claimMessage">Thank you for your offering. Which lot did you draw? Enter its number and your full reading will appear.</p>
+          <form class="claim-form" id="claim-form" novalidate>
+            <label class="claim-label" for="claim-input" data-i18n="claimLabel">Your lot number</label>
+            <div class="claim-row">
+              <span class="claim-prefix" aria-hidden="true">Lot</span>
+              <input id="claim-input" type="number" inputmode="numeric" min="1" max="67" step="1" autocomplete="off" placeholder="28" required>
+            </div>
+            <p class="claim-error" id="claim-error" role="alert" hidden></p>
+            <button class="primary-action compact" type="submit" data-i18n="claimSubmit">SHOW MY READING</button>
+          </form>
+          <button class="text-action claim-new" id="claim-new" type="button" data-i18n="claimNew">I don't remember — let me draw a new lot</button>
         </div>
         <div class="paypal-state" id="paypal-state" hidden>
           <p class="payment-loading" id="payment-loading" data-i18n="paymentLoading">Preparing payment…</p>
@@ -371,9 +385,9 @@
     <div class="noscript">This experience requires JavaScript to draw and reveal a reading.</div>
   </noscript>
 
-  <script src="js/fortunes.js?v=7"></script>
-  <script src="js/plain.js?v=7"></script>
-  <script src="js/whisper.js?v=7"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/fortunes.js?v=8"></script>
+  <script src="js/plain.js?v=8"></script>
+  <script src="js/whisper.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 </html>

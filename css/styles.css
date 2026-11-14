@@ -2525,3 +2525,64 @@ body.is-result-open {
 @media (max-width: 640px) {
   .includes-list { grid-template-columns: 1fr; }
 }
+
+/* Lot-number claim after Gumroad receipt opens in another browser */
+.demo-state .lot-reminder {
+  margin: -6px 0 16px;
+  color: var(--brass-light);
+  font-size: 13px;
+}
+.payment-sheet.is-claim .includes-list,
+.payment-sheet.is-claim .sample-link,
+.payment-sheet.is-claim .purchase-summary,
+.payment-sheet.is-claim .payment-footnote {
+  display: none;
+}
+.claim-form {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+.claim-label {
+  color: #c2c1b7;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.claim-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.115);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.032);
+}
+.claim-row:focus-within {
+  border-color: rgba(225, 201, 141, 0.62);
+  box-shadow: 0 0 0 4px rgba(225, 201, 141, 0.08);
+}
+.claim-prefix {
+  color: var(--brass-light);
+  font-family: Georgia, serif;
+  font-size: 19px;
+}
+.claim-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  border: 0;
+  outline: 0;
+  color: #f0ede3;
+  background: transparent;
+  font-size: 20px;
+}
+.demo-state .claim-error {
+  margin: 0;
+  color: #e07a64;
+  font-size: 13px;
+}
+.claim-new {
+  margin-top: 12px;
+  color: #a6a9a1;
+}
