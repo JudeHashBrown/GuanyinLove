@@ -65,7 +65,16 @@ const I18N = {
     faqRepeatQ: 'Should I draw repeatedly for the same question?',
     faqRepeatA: 'It is usually more helpful to live with the first reading for a while. If the question and circumstances have not changed, repeated draws may only amplify anxiety.',
     faqPaymentQ: 'How does payment work?',
-    faqPaymentA: 'Full readings are US$5 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt on the same device to reveal your reading.',
+    faqPaymentA: 'Full readings are US$5 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt to reveal your reading. If it opens in a different browser, just enter the lot number you drew.',
+    lotReminder: 'Please remember your lot number: {lot}. If your receipt link opens in another browser, you will be asked for it.',
+    claimMessage: 'Thank you for your offering. Which lot did you draw? Enter its number and your full reading will appear.',
+    claimLabel: 'Your lot number',
+    claimSubmit: 'SHOW MY READING',
+    claimNew: "I don't remember — let me draw a new lot",
+    claimError: 'Please enter a lot number from 1 to {max}.',
+    claimTitle: 'Your reading is unlocked',
+    claimKicker: 'THANK YOU',
+    claimNewToast: 'Your reading is still unlocked. Draw your lot, then tap Unlock the complete reading.',
     gumroadMessage: 'Checkout opens securely on Gumroad. After paying, open the link in your receipt and your full reading will appear here.',
     gumroadBuy: 'UNLOCK FOR US$5',
     gumroadUnlocked: 'Thank you. Your full reading is unlocked.',
@@ -555,9 +564,70 @@ function handleGumroadReturn() {
     showFullResult();
     showToast(t('gumroadUnlocked'));
   } else {
+    // Receipt opened in a different browser (e.g. Gmail app vs TikTok in-app browser),
+    // so we don't know which lot was drawn. Keep the credit and ask for the lot number.
     safeStorageSet(STORAGE_KEYS.credit, '1');
-    showToast(t('gumroadCredit'));
+    openClaim();
   }
+}
+
+function resetPaymentHeading() {
+  byId('payment-kicker').textContent = t('paymentKicker');
+  byId('payment-title').textContent = t('paymentTitle');
+  byId('payment-description').hidden = false;
+}
+
+function openClaim() {
+  state.lastFocused = document.activeElement;
+  elements.paymentOverlay.hidden = false;
+  document.body.classList.add('is-modal-open');
+  elements.siteShell.inert = true;
+  elements.siteShell.setAttribute('aria-hidden', 'true');
+  elements.paymentSheet.classList.add('is-claim');
+  elements.demoState.hidden = true;
+  elements.gumroadState.hidden = true;
+  elements.paypalState.hidden = true;
+  elements.claimState.hidden = false;
+  elements.claimError.hidden = true;
+  elements.claimInput.max = String(getFortuneDatabase().length);
+  elements.claimInput.value = '';
+  byId('payment-kicker').textContent = t('claimKicker');
+  byId('payment-title').textContent = t('claimTitle');
+  byId('payment-description').hidden = true;
+  requestAnimationFrame(function () {
+    elements.claimInput.focus({ preventScroll: true });
+  });
+}
+
+function submitClaim(event) {
+  event.preventDefault();
+  const database = getFortuneDatabase();
+  const id = Number(String(elements.claimInput.value).trim());
+  const source = database.find(function (item) { return item.id === id; });
+  if (!Number.isInteger(id) || !source) {
+    elements.claimError.textContent = t('claimError').replace('{max}', String(database.length));
+    elements.claimError.hidden = false;
+    elements.claimInput.focus({ preventScroll: true });
+    return;
+  }
+  safeStorageRemove(STORAGE_KEYS.credit);
+  state.selectedFortune = source;
+  state.topic = 'General';
+  state.question = '';
+  elements.paymentSheet.classList.remove('is-claim');
+  elements.claimState.hidden = true;
+  resetPaymentHeading();
+  showFullResult();
+  showToast(t('gumroadUnlocked'));
+}
+
+function claimDrawNew() {
+  elements.paymentSheet.classList.remove('is-claim');
+  elements.claimState.hidden = true;
+  resetPaymentHeading();
+  closePayment(false);
+  resetOracle();
+  showToast(t('claimNewToast'));
 }
 
 function paymentIsConfigured() {
@@ -615,7 +685,14 @@ function openPayment() {
   const gumroad = !live && gumroadIsConfigured();
   elements.demoState.hidden = live || gumroad;
   elements.gumroadState.hidden = !gumroad;
-  if (gumroad) elements.gumroadBuy.href = getGumroadUrl() + '?wanted=true';
+  if (gumroad) {
+    elements.gumroadBuy.href = getGumroadUrl() + '?wanted=true';
+    elements.gumroadLotReminder.textContent = t('lotReminder')
+      .replace('{lot}', lotShortLabel(getFortuneContent(state.selectedFortune.id)));
+  }
+  elements.claimState.hidden = true;
+  elements.paymentSheet.classList.remove('is-claim');
+  resetPaymentHeading();
   elements.paypalState.hidden = !live;
   elements.paymentLoading.textContent = t('paymentLoading');
   elements.paymentLoading.hidden = live && state.paypalRendered;
@@ -1158,6 +1235,13 @@ function cacheElements() {
     demoUnlock: byId('demo-unlock'),
     gumroadState: byId('gumroad-state'),
     gumroadBuy: byId('gumroad-buy'),
+    gumroadLotReminder: byId('gumroad-lot-reminder'),
+    paymentSheet: document.querySelector('.payment-sheet'),
+    claimState: byId('claim-state'),
+    claimForm: byId('claim-form'),
+    claimInput: byId('claim-input'),
+    claimError: byId('claim-error'),
+    claimNew: byId('claim-new'),
     paypalState: byId('paypal-state'),
     paymentLoading: byId('payment-loading'),
     paymentError: byId('payment-error'),
@@ -1190,6 +1274,8 @@ function bindEvents() {
   });
   elements.demoUnlock.addEventListener('click', showFullResult);
   elements.gumroadBuy.addEventListener('click', startGumroadCheckout);
+  elements.claimForm.addEventListener('submit', submitClaim);
+  elements.claimNew.addEventListener('click', claimDrawNew);
   elements.paymentRetry.addEventListener('click', retryPayment);
   elements.resultBack.addEventListener('click', function () { closeResult(); });
   elements.resultRedraw.addEventListener('click', function () { closeResult({ redraw: true }); });
