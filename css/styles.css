@@ -2586,3 +2586,9 @@ body.is-result-open {
   margin-top: 12px;
   color: #a6a9a1;
 }
+
+.about-thanks {
+  margin-top: 22px;
+  font-size: 0.82rem;
+  opacity: 0.65;
+}

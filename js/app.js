@@ -57,7 +57,7 @@ const I18N = {
     ritualThreeText: 'Treat the reading as a mirror. Keep the line that moves you, then choose one small action of your own.',
     aboutKicker: 'TRADITIONAL IMAGERY · CONTEMPORARY LANGUAGE',
     aboutTitle: 'The lot offers a perspective. The answer remains yours.',
-    aboutText: 'This edition presents 67 independent English translations from the 100-lot collection published by Wujia Longcheng Temple in Kaohsiung. Each reading keeps the source poem and core counsel while using careful contemporary language.',
+    aboutText: 'This edition presents 67 independent English translations from a traditional 100-lot Guanyin oracle collection. Each reading keeps the source poem and core counsel while using careful contemporary language.',
     factLots: 'source notes distilled',
     factTopics: 'areas of focus',
     factUploads: 'questions uploaded',
@@ -126,7 +126,7 @@ const I18N = {
     dimensionsTitle: 'Three areas of life',
     reflectionLabel: 'ONE QUESTION TO KEEP',
     sourceBadge: 'TEMPLE EDITION',
-    sourceEdition: 'Wujia Longcheng Temple edition',
+    sourceEdition: 'Traditional 100-lot edition',
     sourceLink: 'View the original Chinese source',
     resultDisclaimer: 'Treat this reading as a prompt for reflection, not a guarantee about the future. For health, legal, investment or major life decisions, seek qualified professional advice.',
     copied: 'Reading copied',
@@ -137,7 +137,7 @@ const I18N = {
     historyCleared: 'Reading history cleared from this device',
     close: 'Close',
     pageTitle: 'Guanyin Oracle · A quiet moment of reflection',
-    metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
+    metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots, independently translated into clear, modern English.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
     verseLabel: 'THE VERSE YOU DREW',
@@ -405,7 +405,6 @@ function renderPreview() {
   // The short answer is part of the paid reading, so the free preview stays a teaser.
   elements.previewSummary.textContent = '';
   elements.previewSummary.hidden = true;
-  elements.previewSource.href = fortune.sourceUrl;
   elements.paymentLot.textContent = lotShortLabel(fortune);
 
   if (state.question) {
@@ -1047,14 +1046,8 @@ function renderResult() {
   traditional.appendChild(make('p', '', fortune.interpretation));
   sections.push(traditional);
 
-  const source = make('p', 'reading-source');
-  const sourceLink = make('a', '', t('sourceLink'));
-  sourceLink.href = fortune.sourceUrl;
-  sourceLink.target = '_blank';
-  sourceLink.rel = 'noopener noreferrer';
-  source.appendChild(sourceLink);
   const disclaimer = make('p', 'reading-disclaimer', t('resultDisclaimer'));
-  sections.push(source, disclaimer);
+  sections.push(disclaimer);
   elements.resultContent.append.apply(elements.resultContent, sections);
 }
 
@@ -1151,7 +1144,7 @@ function buildShareText() {
     fortune.whisper,
     '',
     t('footerDisclaimer'),
-    t('sourceLink') + ': ' + fortune.sourceUrl
+    'https://guanyinlove.vercel.app'
   ].join('\n');
 }
 
@@ -1218,7 +1211,6 @@ function cacheElements() {
     previewGrade: byId('preview-grade'),
     previewPoem: byId('preview-poem'),
     previewSummary: byId('preview-summary'),
-    previewSource: byId('preview-source'),
     askedQuestion: byId('asked-question'),
     askedQuestionText: byId('asked-question-text'),
     unlockBtn: byId('unlock-btn'),
