@@ -67,7 +67,7 @@ const I18N = {
     faqPaymentQ: 'How does payment work?',
     faqPaymentA: 'Full readings are US$5 each, paid securely through Gumroad. After checkout, open the link in your Gumroad receipt to reveal your reading. If it opens in a different browser, just enter the lot number you drew.',
     faqRefundQ: 'Can I get a refund?',
-    faqRefundA: 'Yes. If you could not open your reading, were charged twice, or simply feel it was not right for you, write to guanyinwhisper@gmail.com within 7 days of purchase with your Gumroad receipt email, and we will refund you in full. No hard feelings, ever.',
+    faqRefundA: 'Yes. If you could not open your reading, were charged twice, or simply feel it was not right for you, write to guanyinwhisper@gmail.com within 30 days of purchase with your Gumroad receipt email, and we will refund you in full. No hard feelings, ever.',
     faqDisclaimerQ: 'What is this reading — and what is it not?',
     faqDisclaimerA: 'Each reading is offered for cultural appreciation, comfort and personal reflection. It does not predict the future and is not medical, psychological, legal, financial or other professional advice. Please do not use it in place of a qualified professional when making important decisions. If you are in crisis or thinking about harming yourself, please contact your local emergency number or a crisis line right away — you deserve real support.',
     footerCrisis: 'If you are in crisis, please contact your local emergency number or a crisis line.',
