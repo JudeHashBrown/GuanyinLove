@@ -11,7 +11,7 @@
 
 const I18N = {
   en: {
-    brand: 'Guanyin Oracle',
+    brand: 'Guanyin Love',
     navRitual: 'The ritual',
     navAbout: 'About the oracle',
     eyebrow: 'ONE QUIET THOUGHT · ONE CLEARER VIEW',
@@ -136,7 +136,7 @@ const I18N = {
     paymentFailed: 'Payment did not complete. Please try again later.',
     historyCleared: 'Reading history cleared from this device',
     close: 'Close',
-    pageTitle: 'Guanyin Oracle · A quiet moment of reflection',
+    pageTitle: 'Guanyin Love · A quiet moment of reflection',
     metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
@@ -175,6 +175,10 @@ const state = {
 
 const elements = {};
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function track(name, params) {
+  try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (e) { /* analytics is optional */ }
+}
 
 function byId(id) {
   return document.getElementById(id);
@@ -393,6 +397,7 @@ async function startDrawing(event) {
   elements.drawBtn.removeAttribute('aria-busy');
   elements.drawBtn.querySelector('.button-label').textContent = t('drawButton');
   renderPreview();
+  track('draw_lot', { lot: fortune.id, topic: state.topic });
 }
 
 function renderPreview() {
@@ -505,6 +510,7 @@ function priceLabel() {
 
 function startGumroadCheckout() {
   if (!state.selectedFortune) return;
+  track('checkout_click', { lot: state.selectedFortune.id });
   safeStorageSet(STORAGE_KEYS.pending, JSON.stringify({
     id: state.selectedFortune.id,
     topic: state.topic,
@@ -562,6 +568,7 @@ function handleGumroadReturn() {
     state.topic = pending.topic || 'General';
     state.question = pending.question || '';
     showFullResult();
+    track('paid_reading_unlocked');
     showToast(t('gumroadUnlocked'));
   } else {
     // Receipt opened in a different browser (e.g. Gmail app vs TikTok in-app browser),
@@ -618,6 +625,7 @@ function submitClaim(event) {
   elements.claimState.hidden = true;
   resetPaymentHeading();
   showFullResult();
+  track('paid_reading_unlocked');
   showToast(t('gumroadUnlocked'));
 }
 
@@ -662,6 +670,7 @@ function openPayment() {
   }
   if (hasFreeTrial()) {
     safeStorageSet(STORAGE_KEYS.trial, 'used');
+    track('free_reading_used', { lot: state.selectedFortune.id, topic: state.topic });
     showFullResult();
     showToast(t('trialGift'));
     return;
@@ -1177,7 +1186,7 @@ async function copyResult(fallbackMessage) {
 async function shareResult() {
   const fortune = getFortuneContent(state.selectedFortune.id);
   const shareData = {
-    title: lotShortLabel(fortune) + ' · Guanyin Oracle',
+    title: lotShortLabel(fortune) + ' · Guanyin Love',
     text: buildShareText(),
     url: window.location.href.split('#')[0]
   };
