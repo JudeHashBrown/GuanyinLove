@@ -57,8 +57,8 @@ const I18N = {
     ritualThreeText: 'Treat the reading as a mirror. Keep the line that moves you, then choose one small action of your own.',
     aboutKicker: 'TRADITIONAL IMAGERY · CONTEMPORARY LANGUAGE',
     aboutTitle: 'The lot offers a perspective. The answer remains yours.',
-    aboutText: 'This edition presents 67 independent English translations from the 100-lot collection published by Wujia Longcheng Temple in Kaohsiung. Each reading keeps the source poem and core counsel while using careful contemporary language.',
-    factLots: 'source notes distilled',
+    aboutText: 'This edition presents all 100 lots of the traditional Guanyin oracle in plain, contemporary English. Each reading keeps the spirit of the classical poem and its counsel while speaking the way a kind friend would.',
+    factLots: 'traditional lots',
     factTopics: 'areas of focus',
     factUploads: 'questions uploaded',
     faqOriginQ: 'Where do these readings come from?',
@@ -126,7 +126,7 @@ const I18N = {
     dimensionsTitle: 'Three areas of life',
     reflectionLabel: 'ONE QUESTION TO KEEP',
     sourceBadge: 'TEMPLE EDITION',
-    sourceEdition: 'Wujia Longcheng Temple edition',
+    sourceEdition: 'Traditional 100-lot edition',
     sourceLink: 'View the original Chinese source',
     resultDisclaimer: 'Treat this reading as a prompt for reflection, not a guarantee about the future. For health, legal, investment or major life decisions, seek qualified professional advice.',
     copied: 'Reading copied',
@@ -137,7 +137,7 @@ const I18N = {
     historyCleared: 'Reading history cleared from this device',
     close: 'Close',
     pageTitle: 'Guanyin Love · A quiet moment of reflection',
-    metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
+    metaDescription: 'Draw one of all 100 traditional Guanyin oracle lots, with plain-English readings for love, career and money. Your first full reading is free.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
     verseLabel: 'THE VERSE YOU DREW',
@@ -232,9 +232,7 @@ function getFortuneDatabase() {
       fortune.interpretation &&
       fortune.reflection &&
       fortune.advice &&
-      TOPIC_KEYS.every(function (topic) { return Boolean(fortune.advice[topic]); }) &&
-      typeof fortune.sourceUrl === 'string' &&
-      fortune.sourceUrl.indexOf('https://www.longcheng.org.tw/') === 0;
+      TOPIC_KEYS.every(function (topic) { return Boolean(fortune.advice[topic]); });
   });
 }
 
@@ -410,7 +408,7 @@ function renderPreview() {
   // The short answer is part of the paid reading, so the free preview stays a teaser.
   elements.previewSummary.textContent = '';
   elements.previewSummary.hidden = true;
-  elements.previewSource.href = fortune.sourceUrl;
+  if (elements.previewSource) elements.previewSource.hidden = true;
   elements.paymentLot.textContent = lotShortLabel(fortune);
 
   if (state.question) {
@@ -1056,14 +1054,8 @@ function renderResult() {
   traditional.appendChild(make('p', '', fortune.interpretation));
   sections.push(traditional);
 
-  const source = make('p', 'reading-source');
-  const sourceLink = make('a', '', t('sourceLink'));
-  sourceLink.href = fortune.sourceUrl;
-  sourceLink.target = '_blank';
-  sourceLink.rel = 'noopener noreferrer';
-  source.appendChild(sourceLink);
   const disclaimer = make('p', 'reading-disclaimer', t('resultDisclaimer'));
-  sections.push(source, disclaimer);
+  sections.push(disclaimer);
   elements.resultContent.append.apply(elements.resultContent, sections);
 }
 
@@ -1160,7 +1152,7 @@ function buildShareText() {
     fortune.whisper,
     '',
     t('footerDisclaimer'),
-    t('sourceLink') + ': ' + fortune.sourceUrl
+    'guanyinlove.vercel.app'
   ].join('\n');
 }
 
