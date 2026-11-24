@@ -1152,7 +1152,7 @@ function buildShareText() {
     fortune.whisper,
     '',
     t('footerDisclaimer'),
-    'guanyinlove.vercel.app'
+    'https://guanyinlove.vercel.app'
   ].join('\n');
 }
 
@@ -1219,7 +1219,6 @@ function cacheElements() {
     previewGrade: byId('preview-grade'),
     previewPoem: byId('preview-poem'),
     previewSummary: byId('preview-summary'),
-    previewSource: byId('preview-source'),
     askedQuestion: byId('asked-question'),
     askedQuestionText: byId('asked-question-text'),
     unlockBtn: byId('unlock-btn'),
