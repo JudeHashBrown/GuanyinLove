@@ -614,5 +614,302 @@ const PLAIN_DB = {
   Career: 'Work practically, go deep in one area, and let honest service build recognition over time.',
   Wealth: 'Think long-term only with what you understand. Steady, focused business can bring gradual returns.',
   action: 'Choose one area to go deeper in, instead of spreading yourself thin.'
+},
+68: {
+  tone: "good",
+  bottomLine: "A happy, blessed sign. The good you have done is coming back to your home.",
+  meaning: "Like spring flowers opening by themselves, things are lining up for you. Your kindness has built a store of goodwill, and now it returns as support, good news, and easier days.",
+  Love: "A warm time for love and family. If you are thinking of commitment, this lot smiles on it.",
+  Career: "People who can help you are near. Say yes to the opportunity in front of you.",
+  Wealth: "Money matters look steady and good. Be fair in your deals and the luck stays.",
+  action: "Do one generous thing for someone at home this week."
+},
+69: {
+  tone: "mixed",
+  bottomLine: "Not now, but later. Like a plum tree in winter, you will bloom again.",
+  meaning: "Things feel bare and cold right now, but you are not broken. When the season changes, you can come back stronger than before, even first in line.",
+  Love: "A second chance in love is possible. Give it time instead of forcing it.",
+  Career: "Stay steady through the slow season. Your moment comes after the waiting.",
+  Wealth: "Hold on to what you have. Better money timing comes a little later.",
+  action: "Do one small thing today that keeps you strong for spring."
+},
+70: {
+  tone: "careful",
+  bottomLine: "Slow down. Running in every direction is wearing you out for little return.",
+  meaning: "You have been busy like a bee, going here and there, but the season has changed. Doing the same thing harder will not help. Rest, look around, and choose a calmer way.",
+  Love: "A relationship built on chasing may not last. Look for someone or something steady.",
+  Career: "Too many directions at once. Focus on one thing and drop the rest for now.",
+  Wealth: "Avoid new spending or risky deals. Keep your money where it is safe.",
+  action: "Cross one unnecessary task off your list and leave it undone."
+},
+71: {
+  tone: "mixed",
+  bottomLine: "A second chance is possible, but two paths at once can cause trouble. Choose carefully.",
+  meaning: "Things may come around a second time, a second love, a second try. That can be good, but holding two choices at once can bring confusion or arguments. Slow down and choose with a clear heart.",
+  Love: "A reunion or a second love may come. Be honest about what happened before.",
+  Career: "You may have two options. Avoid drama and choose one clearly.",
+  Wealth: "Money needs extra effort. Read every agreement and do not double your risk.",
+  action: "Write down the two choices in front of you and what each really costs."
+},
+72: {
+  tone: "careful",
+  bottomLine: "Careful. Something sweet is in front of you, but it may sting.",
+  meaning: "What you want has a cost you may not see yet. A path that looks easy could turn thorny. Take your time, look closely, and do not force it.",
+  Love: "Sweet beginnings can hide hurt. Get to know someone better before you go deeper.",
+  Career: "An easy-looking shortcut may be a trap. Check the details before you commit.",
+  Wealth: "Tempting money can carry hidden risk. Read the fine print and do not rush.",
+  action: "Before you say yes to anything big this week, sleep on it one night."
+},
+73: {
+  tone: "good",
+  bottomLine: "A turning point. Like spring thunder, something is waking you up to rise.",
+  meaning: "After a long quiet time, things are starting to move. This is your moment to climb out of the mud and change. One morning can make a big difference.",
+  Love: "Love can wake up or begin with fresh energy. Let someone see the real you.",
+  Career: "A breakthrough is close. Get ready so you can move when it opens.",
+  Wealth: "Money luck improves. Good partners or support may show up.",
+  action: "Take the first step on something you have been waiting to start."
+},
+74: {
+  tone: "careful",
+  bottomLine: "A trapped feeling. Do not struggle harder; stay calm and avoid new commitments.",
+  meaning: "You may feel stuck, like a bird in a cage with every direction blocked. Fighting it now will only tire you. Protect yourself, avoid new promises, and wait for the situation to change.",
+  Love: "This is not a good time to commit. Protect your heart.",
+  Career: "Many doors seem closed. Hold your position and do not start anything new.",
+  Wealth: "Risk of loss. Avoid new investments, loans, and lending money.",
+  action: "Tell one person you trust how stuck you feel."
+},
+75: {
+  tone: "mixed",
+  bottomLine: "A scary road, but you can get through it. Stay careful and keep yourself safe.",
+  meaning: "You may feel like you are crossing a mountain with a tiger in your arms. It is frightening, but this lot says things can turn out better than you fear, as long as you stay careful.",
+  Love: "Love may feel shaky. Go slowly and look after your own heart.",
+  Career: "A tough stretch at work can end well. Be careful and patient.",
+  Wealth: "Be cautious with money. Avoid anything you are unsure about.",
+  action: "Make one choice this week that keeps you safer, even if it is slower."
+},
+76: {
+  tone: "mixed",
+  bottomLine: "Wait and prepare. Your big leap is coming, but not yet.",
+  meaning: "You are like a fish waiting in a deep pool. The timing is not right yet, but when it is, you can rise quickly. Do not rush; just keep getting ready.",
+  Love: "Love may arrive later. Stay open and patient.",
+  Career: "Keep working quietly. Your moment can come suddenly.",
+  Wealth: "Money grows slowly. Hold steady for now.",
+  action: "Spend 20 minutes today getting better at one skill."
+},
+77: {
+  tone: "mixed",
+  bottomLine: "Some of this is still a dream. Do not bet on what you cannot see yet.",
+  meaning: "What you are hoping for may not be real yet. Plans that sound great but are far away are hard to trust. Find someone wise to point the way, and you will feel much clearer.",
+  Love: "Be careful of a love that lives mostly in your imagination. Look for what is real.",
+  Career: "Big promises may not hold. Ask someone you trust for advice.",
+  Wealth: "Do not count on money that is not in your hand yet.",
+  action: "Ask one experienced person for honest advice about your plan."
+},
+78: {
+  tone: "good",
+  bottomLine: "A very good sign. Your skills and steady heart can take you anywhere.",
+  meaning: "Like water that is just the right temperature, you are balanced. Your abilities are strong enough to carry you through. Things can go smoothly now.",
+  Love: "A calm, warm love is favored. Steady and kind beats intense.",
+  Career: "Your skills are your ticket. Use them with confidence.",
+  Wealth: "Money flows well when you use what you are good at.",
+  action: "Use one of your skills to help someone or to earn something this week."
+},
+79: {
+  tone: "mixed",
+  bottomLine: "Keep your promises. Do not forget the help you once asked for.",
+  meaning: "Maybe you once asked for help and received it, but forgot to give thanks or keep your word. This lot says gratitude and follow-through keep your luck steady.",
+  Love: "Keep your word in love. Small promises matter.",
+  Career: "Finish what you said you would do. That builds trust.",
+  Wealth: "Stay modest with money and avoid shortcuts.",
+  action: "Keep one promise you have been putting off."
+},
+80: {
+  tone: "good",
+  bottomLine: "A great sign. Keep doing honest work; recognition is coming.",
+  meaning: "You may be quietly working on yourself, and suddenly you get noticed. Your honest heart is your strength, and your good name can spread far.",
+  Love: "A good match is favored. Being honest attracts the right person.",
+  Career: "Someone may notice your work. Keep doing it with integrity.",
+  Wealth: "Money goes well. Stay focused instead of chasing everything.",
+  action: "Finish one piece of work you are proud of and let it be seen."
+},
+81: {
+  tone: "good",
+  bottomLine: "Hard at first, good at the end. A fair wind is carrying you home.",
+  meaning: "Like a traveler going home at the end of autumn, a long, tiring season is ending. Heaven is helping now, and you may come back with more than you expected.",
+  Love: "Someone may come back, or things can settle into peace after hard times.",
+  Career: "Go ahead with your plan. Success may come late, but it comes.",
+  Wealth: "A good return may come later. Patience pays.",
+  action: "Thank someone who helped you through a hard season."
+},
+82: {
+  tone: "mixed",
+  bottomLine: "It looks scary, but you will not be destroyed. Like a lotus in fire, you keep growing.",
+  meaning: "You may be in the middle of something hot and difficult. This lot shows a lotus that grows right in the flames. It looks dangerous, but in the end you are not truly harmed.",
+  Love: "Love may be tense. Stay calm and protect what is good between you.",
+  Career: "Work feels like pressure and gossip. Stay quiet and keep going.",
+  Wealth: "Money needs hard work. Avoid risky people and new bets.",
+  action: "Name one thing in you that has grown stronger because of this hard time."
+},
+83: {
+  tone: "mixed",
+  bottomLine: "Not complete yet, but growing. Wait, and it will become full.",
+  meaning: "Like a crescent moon, things are only partly there right now. This is not failure. Give it time, and it can grow into something whole and bright.",
+  Love: "A relationship may still be forming. Give it time.",
+  Career: "Not the moment for big moves. Wait a little longer.",
+  Wealth: "Keep money steady and patient for now.",
+  action: "Write down what is already working, even if it is not finished."
+},
+84: {
+  tone: "careful",
+  bottomLine: "Careful. Do not trade your good name or clear head for quick gain.",
+  meaning: "This lot warns that chasing fame, fun, or easy wins can cost you your integrity. Good luck can turn if you are not careful. Keep a clear head and do not make big moves right now.",
+  Love: "Watch out for a love that clouds your judgment. Do not rush.",
+  Career: "Do not trade your values for a title. Avoid big job moves now.",
+  Wealth: "Avoid gambling, speculation, and big purchases.",
+  action: "Before a big decision this week, ask yourself if you would be proud of it in a year."
+},
+85: {
+  tone: "mixed",
+  bottomLine: "Late, but good. The fog is lifting, and help is on the way.",
+  meaning: "Things may come later than you hoped, but they can still bloom. The clouds are clearing, and someone may help you take the next step up.",
+  Love: "Love may come later. Keep your heart open.",
+  Career: "Keep working steadily. A mentor may help you rise.",
+  Wealth: "Money takes effort and may come later than you planned.",
+  action: "Ask for help from someone a step ahead of you."
+},
+86: {
+  tone: "good",
+  bottomLine: "One of the best signs. Success can come like a thunderclap.",
+  meaning: "Spring has arrived for you. Good things are coming from far away, and a big leap forward is possible. Step up with confidence.",
+  Love: "A great time for love and commitment.",
+  Career: "A big step up is possible. Go for the exam, role, or promotion.",
+  Wealth: "Money luck is strong. Still read the details.",
+  action: "Apply for, ask for, or start the big thing you have been dreaming about."
+},
+87: {
+  tone: "mixed",
+  bottomLine: "A hard climb, but you are protected. Keep going carefully.",
+  meaning: "You may feel halfway up a steep hill with the sun going down. It is not easy, but you are still safe. With steady effort, you can find something valuable.",
+  Love: "Love has bumps. Be patient.",
+  Career: "Work is tiring. Keep going carefully; help is near.",
+  Wealth: "Money takes effort. Go slowly and carefully.",
+  action: "Take one careful step forward today, not a big leap."
+},
+88: {
+  tone: "mixed",
+  bottomLine: "A false alarm. What scares you may be less dangerous than it looks.",
+  meaning: "Like a wooden tiger at the door, something looks scary but may not be able to hurt you. Your worry might be bigger than the real problem. Breathe, and look again.",
+  Love: "Worry may be hurting things more than reality. Talk it through.",
+  Career: "A scary situation at work may be mostly noise. Stay calm.",
+  Wealth: "Do not let fear rush your money choices.",
+  action: "Write down your biggest fear, then write what is actually true about it."
+},
+89: {
+  tone: "good",
+  bottomLine: "A lucky sign. There is treasure in your situation waiting to be found.",
+  meaning: "Like jade hidden in rock, something valuable is right there, just not visible yet. With the right person's help, it comes out, and joy follows.",
+  Love: "A good match may be closer than you think.",
+  Career: "Accept guidance. Someone can help you shine.",
+  Wealth: "Money looks good, especially with wise advice.",
+  action: "Ask someone you trust what strengths they see in you."
+},
+90: {
+  tone: "good",
+  bottomLine: "Good news is coming, and helpers are waiting on the road ahead.",
+  meaning: "Something good may arrive suddenly. You are not alone on the road. People ahead of you are ready to help push you forward.",
+  Love: "Good news in love may come. Move forward.",
+  Career: "Success is favored. Keep going; help is ahead.",
+  Wealth: "Money luck is strong. Handle details carefully.",
+  action: "Say yes to an opportunity that comes your way this week."
+},
+91: {
+  tone: "good",
+  bottomLine: "A very good sign. Your worries ease, and a wide road opens ahead.",
+  meaning: "The worries you have carried are lifting. The road ahead is as wide as the sky. Whatever you do with an honest heart can go well.",
+  Love: "A happy, open time for love.",
+  Career: "The way is clear. Go ahead.",
+  Wealth: "Money and gains are favored.",
+  action: "Take one bold, honest step toward what you want."
+},
+92: {
+  tone: "good",
+  bottomLine: "A great sign. Years of steady effort are about to pay off.",
+  meaning: "Everything you have been learning and building for years is now ready to bear fruit. Success may come more easily than you expect.",
+  Love: "A good time to commit or build a family.",
+  Career: "Your long effort pays off. Go for your personal goal.",
+  Wealth: "Steady, honest work brings good money results.",
+  action: "Celebrate one thing you have built slowly over time."
+},
+93: {
+  tone: "mixed",
+  bottomLine: "A rough patch. You may feel small right now, but you will rise again.",
+  meaning: "Like a phoenix soaked by rain, you might be overlooked or picked on right now. This will pass. Do not waste energy on every fight. When the clouds clear, you will shine again.",
+  Love: "Love may be delayed. Do not chase; be patient.",
+  Career: "Others may get ahead unfairly for now. Stay steady.",
+  Wealth: "Hold steady with money and wait.",
+  action: "Let one small fight go this week to protect your energy."
+},
+94: {
+  tone: "careful",
+  bottomLine: "Stay calm and do not get dragged into drama. Share your heart only with true friends.",
+  meaning: "This is not the time to argue or act out of character. Small mistakes could turn into big quarrels. Keep a quiet, steady routine, and save your heart for those who really understand you.",
+  Love: "Look for someone who truly understands you. Do not rush.",
+  Career: "Stay out of gossip and office drama.",
+  Wealth: "Be careful with money and wait before deals.",
+  action: "Spend time with one friend who really gets you."
+},
+95: {
+  tone: "mixed",
+  bottomLine: "Keep your ambition. Hard work now brings good news later.",
+  meaning: "This is a time to commit to what you want. Do not let the cost scare you off. Keep working, and good news can arrive like a rooster's call at sunrise.",
+  Love: "Commitment may take a little time, but it can come.",
+  Career: "Do not give up because it feels hard. Your effort counts.",
+  Wealth: "Money comes with steady work. Be patient.",
+  action: "Recommit to one goal and do one task for it today."
+},
+96: {
+  tone: "good",
+  bottomLine: "A blessed sign. Keep doing good, and heaven sends good back.",
+  meaning: "Like a shining pagoda, the good in your life is visible to others. Keep a kind heart and do good, and blessings will keep coming.",
+  Love: "A warm, blessed time for love.",
+  Career: "Your good name shines. Keep acting with integrity.",
+  Wealth: "Honest money is favored.",
+  action: "Do one kind thing today without telling anyone."
+},
+97: {
+  tone: "careful",
+  bottomLine: "Careful. Some of what you see is like a candle in the wind: fragile and hard to hold.",
+  meaning: "Some plans look beautiful but may not be solid, like flowers in a mirror. Things might flicker and go out. Hold on to what is real, and do not chase big dreams right now.",
+  Love: "Love may be more illusion than reality. Look closely.",
+  Career: "Big plans may be shaky. Take small, solid steps.",
+  Wealth: "Do not chase money that might not be real.",
+  action: "Pick one small, real step and finish it instead of planning the big picture."
+},
+98: {
+  tone: "careful",
+  bottomLine: "Wait. Moving now could lead you into a net.",
+  meaning: "This is a time to slow down and wait. Rushing ahead could be like a bird flying into a net. Do not let worry push you into action. Help will come later.",
+  Love: "Do not rush into love now.",
+  Career: "Avoid new moves and stay away from troublemakers.",
+  Wealth: "Avoid investments and big spending.",
+  action: "Postpone one decision you feel pressured to make."
+},
+99: {
+  tone: "careful",
+  bottomLine: "A hard sign. Do not charge ahead. Protect what you have and be gentle.",
+  meaning: "This lot speaks of a difficult season. Rushing forward now could make things worse. Slow down, protect what matters, avoid fights, and do good while you wait for things to pass.",
+  Love: "Love may be strained. Be gentle and avoid fights.",
+  Career: "Do not rush any work decisions. Protect where you are.",
+  Wealth: "High risk of loss. Avoid investments and loans.",
+  action: "Protect one important thing today, and let go of one argument."
+},
+100: {
+  tone: "careful",
+  bottomLine: "The last message: stay steady, ignore confusing voices, and wait for the right time.",
+  meaning: "This is the hundredth lot, and its message is simple: you have heard enough. Do not let confusing talk pull you around. Keep to what you know and wait for a better time.",
+  Love: "Do not force love right now. Hold steady.",
+  Career: "Avoid big changes. Stay where you are for now.",
+  Wealth: "Avoid new deals and protect your savings.",
+  action: "Turn off the noise for one day and listen to your own heart."
 }
 };

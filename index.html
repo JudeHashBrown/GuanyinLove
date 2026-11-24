@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#11110f">
   <meta name="color-scheme" content="dark light">
-  <meta name="description" content="Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.">
+  <meta name="description" content="Draw one of all 100 traditional Guanyin oracle lots, with plain-English readings for love, career and money. Your first full reading is free.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
-  <meta property="og:site_name" content="Guanyin Oracle">
-  <meta property="og:title" content="Guanyin Oracle · A quiet moment of reflection">
-  <meta property="og:description" content="Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.">
+  <meta property="og:site_name" content="Guanyin Love">
+  <meta property="og:title" content="Guanyin Love · A quiet moment of reflection">
+  <meta property="og:description" content="Draw one of all 100 traditional Guanyin oracle lots, with plain-English readings for love, career and money. Your first full reading is free.">
   <meta name="twitter:card" content="summary">
-  <title>Guanyin Oracle · A quiet moment of reflection</title>
+  <title>Guanyin Love · A quiet moment of reflection</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/temple-oracle.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="css/styles.css?v=8">
@@ -36,10 +36,10 @@
 
   <div class="site-shell" id="site-shell">
     <header class="topbar" aria-label="Site navigation">
-      <a class="brand" href="#oracle" aria-label="Guanyin Oracle home">
+      <a class="brand" href="#oracle" aria-label="Guanyin Love home">
         <span class="brand-seal" aria-hidden="true">G</span>
         <span class="brand-copy">
-          <strong data-i18n="brand">Guanyin Oracle</strong>
+          <strong data-i18n="brand">Guanyin Love</strong>
           <small>QUIET REFLECTIONS</small>
         </span>
       </a>
@@ -172,7 +172,7 @@
 
           <blockquote class="preview-poem" id="preview-poem"></blockquote>
           <p class="preview-summary" id="preview-summary"></p>
-          <a class="preview-source" id="preview-source" href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer" data-i18n="sourceLink">View the original Chinese source</a>
+          <a class="preview-source" id="preview-source" href="#about" hidden></a>
           <div class="asked-question" id="asked-question" hidden>
             <span data-i18n="yourQuestion">THE QUESTION IN YOUR HEART</span>
             <p id="asked-question-text"></p>
@@ -259,17 +259,17 @@
         <div class="about-copy">
           <p class="section-kicker" data-i18n="aboutKicker">TRADITIONAL IMAGERY · CONTEMPORARY LANGUAGE</p>
           <h2 id="about-title" data-i18n="aboutTitle">The lot offers a perspective. The answer remains yours.</h2>
-          <p data-i18n="aboutText">This edition presents 67 independent English translations from the 100-lot collection published by Wujia Longcheng Temple in Kaohsiung. Each reading keeps the source poem and core counsel while using careful contemporary language.</p>
+          <p data-i18n="aboutText">This edition presents all 100 lots of the traditional Guanyin oracle in plain, contemporary English. Each reading keeps the spirit of the classical poem and its counsel while speaking the way a kind friend would.</p>
 
           <div class="about-facts">
-            <div><strong id="fortune-count">100+</strong><span data-i18n="factLots">source notes distilled</span></div>
+            <div><strong id="fortune-count">100</strong><span data-i18n="factLots">traditional lots</span></div>
             <div><strong>4</strong><span data-i18n="factTopics">areas of focus</span></div>
             <div><strong>0</strong><span data-i18n="factUploads">questions uploaded</span></div>
           </div>
 
           <details>
             <summary data-i18n="faqOriginQ">Where do these readings come from?</summary>
-            <p>Every lot is independently translated and condensed from the Chinese reference published by <a href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer">Wujia Longcheng Temple</a>. This website is not affiliated with or endorsed by the temple.</p>
+            <p>The hundred lots come from the classical Guanyin oracle used in temples across the Chinese-speaking world. Each poem is retold here in our own plain English. With thanks to the temples and teachers whose published readings first helped us understand these lots. This website is independent and not affiliated with any temple.</p>
           </details>
           <details>
             <summary data-i18n="faqRepeatQ">Should I draw repeatedly for the same question?</summary>
@@ -286,14 +286,14 @@
     <footer class="site-footer">
       <div class="brand footer-brand">
         <span class="brand-seal" aria-hidden="true">G</span>
-        <span class="brand-copy"><strong data-i18n="brand">Guanyin Oracle</strong><small>QUIET REFLECTIONS</small></span>
+        <span class="brand-copy"><strong data-i18n="brand">Guanyin Love</strong><small>QUIET REFLECTIONS</small></span>
       </div>
       <div class="footer-notes">
         <p data-i18n="footerDisclaimer">For cultural appreciation and personal reflection only. Not medical, legal, financial or other professional advice.</p>
-        <a class="footer-source" href="https://www.longcheng.org.tw/?act=jieqianyuandi&amp;cmd=list" target="_blank" rel="noopener noreferrer">Source collection · Wujia Longcheng Temple</a>
-        <p class="footer-contact">Questions? Write to <a href="mailto:guanyinwhisper@gmail.com">guanyinwhisper@gmail.com</a> 🙏</p>
+        <p class="footer-lots"><a href="/lots/">All 100 Guanyin lots and their meanings</a></p>
+        <p class="footer-contact">Questions? Write to <a href="mailto:guanyinlovewhisper@gmail.com">guanyinlovewhisper@gmail.com</a> 🙏</p>
       </div>
-      <span>© <b id="current-year"></b> Guanyin Oracle</span>
+      <span>© <b id="current-year"></b> Guanyin Love</span>
     </footer>
   </div>
 
@@ -330,7 +330,7 @@
             <label class="claim-label" for="claim-input" data-i18n="claimLabel">Your lot number</label>
             <div class="claim-row">
               <span class="claim-prefix" aria-hidden="true">Lot</span>
-              <input id="claim-input" type="number" inputmode="numeric" min="1" max="67" step="1" autocomplete="off" placeholder="28" required>
+              <input id="claim-input" type="number" inputmode="numeric" min="1" max="100" step="1" autocomplete="off" placeholder="28" required>
             </div>
             <p class="claim-error" id="claim-error" role="alert" hidden></p>
             <button class="primary-action compact" type="submit" data-i18n="claimSubmit">SHOW MY READING</button>
