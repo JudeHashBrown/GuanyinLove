@@ -1,5 +1,5 @@
 /**
- * Guanyin Oracle — interaction, accessibility and payment shell.
+ * Guanyin Love — interaction, accessibility and payment shell.
  *
  * The site stays in transparent demo mode unless payment is explicitly enabled
  * and a PayPal client ID, display price and trusted API are all configured on
@@ -11,7 +11,7 @@
 
 const I18N = {
   en: {
-    brand: 'Guanyin Oracle',
+    brand: 'Guanyin Love',
     navRitual: 'The ritual',
     navAbout: 'About the oracle',
     eyebrow: 'ONE QUIET THOUGHT · ONE CLEARER VIEW',
@@ -57,7 +57,7 @@ const I18N = {
     ritualThreeText: 'Treat the reading as a mirror. Keep the line that moves you, then choose one small action of your own.',
     aboutKicker: 'TRADITIONAL IMAGERY · CONTEMPORARY LANGUAGE',
     aboutTitle: 'The lot offers a perspective. The answer remains yours.',
-    aboutText: 'This edition presents 67 independent English translations from the 100-lot collection published by Wujia Longcheng Temple in Kaohsiung. Each reading keeps the source poem and core counsel while using careful contemporary language.',
+    aboutText: 'Guanyin Love brings the traditional Guanyin temple lots to you in plain, gentle English. Each reading keeps the original poem and its core counsel, so you can sit with it in your own way.',
     factLots: 'source notes distilled',
     factTopics: 'areas of focus',
     factUploads: 'questions uploaded',
@@ -126,7 +126,7 @@ const I18N = {
     dimensionsTitle: 'Three areas of life',
     reflectionLabel: 'ONE QUESTION TO KEEP',
     sourceBadge: 'TEMPLE EDITION',
-    sourceEdition: 'Wujia Longcheng Temple edition',
+    sourceEdition: 'Traditional temple edition',
     sourceLink: 'View the original Chinese source',
     resultDisclaimer: 'Treat this reading as a prompt for reflection, not a guarantee about the future. For health, legal, investment or major life decisions, seek qualified professional advice.',
     copied: 'Reading copied',
@@ -136,8 +136,8 @@ const I18N = {
     paymentFailed: 'Payment did not complete. Please try again later.',
     historyCleared: 'Reading history cleared from this device',
     close: 'Close',
-    pageTitle: 'Guanyin Oracle · A quiet moment of reflection',
-    metaDescription: 'Explore 100+ source insights across 67 Guanyin oracle lots independently translated from Wujia Longcheng Temple.',
+    pageTitle: 'Guanyin Love · Free Guanyin Temple Lot Reading',
+    metaDescription: 'Guanyin Love — draw a traditional Guanyin temple lot and receive a gentle, plain-English reading. Your first full reading is free.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
     verseLabel: 'THE VERSE YOU DREW',
@@ -405,7 +405,6 @@ function renderPreview() {
   // The short answer is part of the paid reading, so the free preview stays a teaser.
   elements.previewSummary.textContent = '';
   elements.previewSummary.hidden = true;
-  elements.previewSource.href = fortune.sourceUrl;
   elements.paymentLot.textContent = lotShortLabel(fortune);
 
   if (state.question) {
@@ -842,7 +841,7 @@ async function initPayPal(clientId, paymentApi) {
 }
 
 function showPaymentError(error) {
-  console.error('[Guanyin Oracle] payment error:', error);
+  console.error('[Guanyin Love] payment error:', error);
   state.paypalRendered = false;
   elements.paymentLoading.hidden = true;
   elements.paymentError.hidden = false;
@@ -1047,14 +1046,8 @@ function renderResult() {
   traditional.appendChild(make('p', '', fortune.interpretation));
   sections.push(traditional);
 
-  const source = make('p', 'reading-source');
-  const sourceLink = make('a', '', t('sourceLink'));
-  sourceLink.href = fortune.sourceUrl;
-  sourceLink.target = '_blank';
-  sourceLink.rel = 'noopener noreferrer';
-  source.appendChild(sourceLink);
   const disclaimer = make('p', 'reading-disclaimer', t('resultDisclaimer'));
-  sections.push(source, disclaimer);
+  sections.push(disclaimer);
   elements.resultContent.append.apply(elements.resultContent, sections);
 }
 
@@ -1177,7 +1170,7 @@ async function copyResult(fallbackMessage) {
 async function shareResult() {
   const fortune = getFortuneContent(state.selectedFortune.id);
   const shareData = {
-    title: lotShortLabel(fortune) + ' · Guanyin Oracle',
+    title: lotShortLabel(fortune) + ' · Guanyin Love',
     text: buildShareText(),
     url: window.location.href.split('#')[0]
   };
@@ -1218,7 +1211,6 @@ function cacheElements() {
     previewGrade: byId('preview-grade'),
     previewPoem: byId('preview-poem'),
     previewSummary: byId('preview-summary'),
-    previewSource: byId('preview-source'),
     askedQuestion: byId('asked-question'),
     askedQuestionText: byId('asked-question-text'),
     unlockBtn: byId('unlock-btn'),
