@@ -141,7 +141,7 @@ const I18N = {
     paymentFailed: 'Payment did not complete. Please try again later.',
     historyCleared: 'Reading history cleared from this device',
     close: 'Close',
-    pageTitle: 'Guanyin Love · A quiet moment of reflection',
+    pageTitle: 'Free Guanyin Oracle – Temple Fortune Lots Online | Guanyin Love',
     metaDescription: 'Draw one of all 100 traditional Guanyin oracle lots, with plain-English readings for love, career and money. Your first full reading is free.',
     imageAlt: 'A cinnabar fortune-stick vessel in a mountain temple courtyard at dusk',
     shortAnswer: 'THE SHORT ANSWER',
